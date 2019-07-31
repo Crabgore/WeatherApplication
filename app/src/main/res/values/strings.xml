@@ -1,0 +1,65 @@
+<resources>
+    <string name="app_name">Weather Application</string>
+    <string name="city">Калининград</string>
+    <string name="date">7 июля</string>
+    <string name="day_night">Днём 16°c | Ночью 12°c</string>
+    <string name="cur_temp">16°c</string>
+    <string name="feel_temp">ощущается как 18°с</string>
+    <string name="weather_type">Облачно</string>
+    <string name="tomorrow">завтра</string>
+    <string name="third_day">9 июля</string>
+    <string name="fourth_day">10 июля</string>
+    <string name="fifth_day">11 июля</string>
+    <string name="sixth_day">12 июля</string>
+    <string name="tomorrow_weath_type">Облачно</string>
+    <string name="third_day_weath_type">Солнечно</string>
+    <string name="fourth_day_weath_type">Солнечно</string>
+    <string name="fifth_day_weath_type">Облачно</string>
+    <string name="sixth_day_weath_type">Облачно</string>
+    <string name="tomorrow_day_night">16°с | 12°c</string>
+    <string name="third_day_day_night">16°с | 12°c</string>
+    <string name="fourth_day_day_night">16°с | 12°c</string>
+    <string name="fifth_day_day_night">16°с | 12°c</string>
+    <string name="sixth_day_day_night">16°с | 12°c</string>
+    <string name="future_day_night">День | Ночь</string>
+    <string name="choose_city">Выберите город:</string>
+    <string name="wind_speed">Показывать скорость ветра</string>
+    <string name="pressure">Показывать атмосферное давление</string>
+    <string name="accept">Применить</string>
+    <string name="settings">Настройки</string>
+    <string name="dark_theme">Тёмная тема</string>
+    <string name="temperature">Единицы измерения температуры:</string>
+    <string name="C">°C</string>
+    <string name="F">°F</string>
+    <string name="wind_speed_count">Единицы измерения скорости ветра:</string>
+    <string name="wind_speed_count_1">м/с</string>
+    <string name="wind_speed_count_2">км/ч</string>
+    <string name="city_choose">Выберите город</string>
+    <string name="settings_btn">настройки</string>
+    <string name="settings_accept">применить</string>
+    <string name="info">О городе</string>
+
+    <string-array name="cities">
+        <item>Калининград</item>
+        <item>Москва</item>
+        <item>Санкт-Петербург</item>
+        <item>Новосибирск</item>
+        <item>Красноярск</item>
+        <item>Тверь</item>
+        <item>Омск</item>
+        <item>Краснодар</item>
+        <item>Архангельск</item>
+    </string-array>
+
+    <string-array name="days">
+        <item>Завтра</item>
+        <item>через день</item>
+        <item>через два дня</item>
+        <item>через три дня</item>
+        <item>через четыре дня</item>
+    </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>

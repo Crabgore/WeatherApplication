@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".MainActivity"
+    android:background="@drawable/background"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <TextView
+            android:id="@+id/city"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textSize="35sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:layout_marginTop="55dp"
+            android:shadowColor="@android:color/black"
+            android:shadowRadius="2"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            android:shadowColor="@android:color/black"
+            android:shadowRadius="2"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            app:layout_constraintTop_toBottomOf="@id/city"/>
+
+            <LinearLayout
+                android:id="@+id/layout1"
+                app:layout_constraintTop_toBottomOf="@id/date"
+                android:layout_marginTop="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/willBe"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/white"
+                    android:shadowColor="@android:color/black"
+                    android:shadowRadius="2"
+                    android:shadowDx="2"
+                    android:shadowDy="2"/>
+
+                <TextView
+                    android:id="@+id/temperature"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="60sp"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/white"
+                    android:textAlignment="center"
+                    android:shadowColor="@android:color/black"
+                    android:shadowRadius="2"
+                    android:shadowDx="2"
+                    android:shadowDy="2"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/feel_temp"
+                    android:textColor="@android:color/white"
+                    android:textAlignment="center"
+                    android:shadowColor="@android:color/black"
+                    android:shadowRadius="2"
+                    android:shadowDx="2"
+                    android:shadowDy="2"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/layout2"
+                app:layout_constraintTop_toBottomOf="@id/layout1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/weather_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp" />
+
+                <TextView
+                    android:id="@+id/weather_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/white"
+                    android:textAlignment="center"
+                    android:shadowColor="@android:color/black"
+                    android:shadowRadius="2"
+                    android:shadowDx="2"
+                    android:shadowDy="2"/>
+            </LinearLayout>
+
+
+
+        <LinearLayout
+            app:layout_constraintTop_toBottomOf="@id/layout2"
+            android:id="@+id/layout3"
+            android:layout_marginTop="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Скорость ветра:"
+                android:textColor="@android:color/white"
+                android:textAlignment="center"
+                android:shadowColor="@android:color/black"
+                android:shadowRadius="2"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/windSpeed_value"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:textAlignment="center"
+                android:shadowColor="@android:color/black"
+                android:shadowRadius="2"
+                android:shadowDx="2"
+                android:shadowDy="2"/>
+
+            <TextView
+                android:id="@+id/windSpeed_units"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:textAlignment="center"
+                android:shadowColor="@android:color/black"
+                android:shadowRadius="2"
+                android:shadowDx="2"
+                android:shadowDy="2"/>
+
+        </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout4"
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/layout3">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Давление:"
+                android:textColor="@android:color/white"
+                android:textAlignment="center"
+                android:shadowColor="@android:color/black"
+                android:shadowRadius="2"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/pressure_value"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:textAlignment="center"
+                android:shadowColor="@android:color/black"
+                android:shadowRadius="2"
+                android:shadowDx="2"
+                android:shadowDy="2"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="мм рт.ст."
+                android:textColor="@android:color/white"
+                android:textAlignment="center"
+                android:shadowColor="@android:color/black"
+                android:shadowRadius="2"
+                android:shadowDx="2"
+                android:shadowDy="2"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout5"
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/layout4">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Влажность:"
+            android:textColor="@android:color/white"
+            android:textAlignment="center"
+            android:shadowColor="@android:color/black"
+            android:shadowRadius="2"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/humidity_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:textAlignment="center"
+            android:shadowColor="@android:color/black"
+            android:shadowRadius="2"
+            android:shadowDx="2"
+            android:shadowDy="2"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="%"
+            android:textColor="@android:color/white"
+            android:textAlignment="center"
+            android:shadowColor="@android:color/black"
+            android:shadowRadius="2"
+            android:shadowDx="2"
+            android:shadowDy="2"/>
+    </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/info"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
