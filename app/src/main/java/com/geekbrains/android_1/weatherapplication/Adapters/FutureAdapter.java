@@ -39,15 +39,15 @@ public class FutureAdapter extends RecyclerView.Adapter<FutureAdapter.ViewHolder
         viewHolder.getDayNight().setText(dayNight.get(i).toString());
         if (weatherType.get(i).toString().equals("Clouds")) {
             viewHolder.getImageWeatherType().setImageResource(R.drawable.cloud);
-            viewHolder.getTextWeatherType().setText("Облачно");
+            viewHolder.getTextWeatherType().setText(R.string.cloud);
         }
         if (weatherType.get(i).toString().equals("Clear")) {
             viewHolder.getImageWeatherType().setImageResource(R.drawable.sun);
-            viewHolder.getTextWeatherType().setText("Солнечно");
+            viewHolder.getTextWeatherType().setText(R.string.clear);
         }
         if (weatherType.get(i).toString().equals("Rain")) {
             viewHolder.getImageWeatherType().setImageResource(R.drawable.rain);
-            viewHolder.getTextWeatherType().setText("Дождь");
+            viewHolder.getTextWeatherType().setText(R.string.rain);
         }
     }
 
@@ -75,15 +75,15 @@ public class FutureAdapter extends RecyclerView.Adapter<FutureAdapter.ViewHolder
             return day;
         }
 
-        public TextView getDayNight() {
+        TextView getDayNight() {
             return dayNight;
         }
 
-        public ImageView getImageWeatherType() {
+        ImageView getImageWeatherType() {
             return imageWeatherType;
         }
 
-        public TextView getTextWeatherType() {
+        TextView getTextWeatherType() {
             return textWeatherType;
         }
     }

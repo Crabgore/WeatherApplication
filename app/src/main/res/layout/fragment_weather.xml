@@ -66,17 +66,6 @@
                     android:shadowRadius="2"
                     android:shadowDx="2"
                     android:shadowDy="2"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/feel_temp"
-                    android:textColor="@android:color/white"
-                    android:textAlignment="center"
-                    android:shadowColor="@android:color/black"
-                    android:shadowRadius="2"
-                    android:shadowDx="2"
-                    android:shadowDy="2"/>
             </LinearLayout>
 
 
@@ -117,7 +106,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Скорость ветра:"
+                android:text="@string/windSpeed"
                 android:textColor="@android:color/white"
                 android:textAlignment="center"
                 android:shadowColor="@android:color/black"
@@ -161,7 +150,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Давление:"
+                android:text="@string/pressureWeather"
                 android:textColor="@android:color/white"
                 android:textAlignment="center"
                 android:shadowColor="@android:color/black"
@@ -184,7 +173,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="мм рт.ст."
+                android:text="@string/pressure_units"
                 android:textColor="@android:color/white"
                 android:textAlignment="center"
                 android:shadowColor="@android:color/black"
@@ -204,7 +193,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Влажность:"
+            android:text="@string/humidity"
             android:textColor="@android:color/white"
             android:textAlignment="center"
             android:shadowColor="@android:color/black"
@@ -227,7 +216,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="%"
+            android:text="@string/humidity_units"
             android:textColor="@android:color/white"
             android:textAlignment="center"
             android:shadowColor="@android:color/black"

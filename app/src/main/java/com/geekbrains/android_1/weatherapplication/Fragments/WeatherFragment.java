@@ -174,29 +174,29 @@ public class WeatherFragment extends Fragment {
                             public void run() {
                                 if (BaseActivity.mSettings.getBoolean(BaseActivity.APP_PREFERENCES_TEMP_UNIT, true)){
                                     temperature.setText(String.format("%.1f °C", weatherRequest.getMain().getTemp()));
-                                    willBe.setText("Днём " + String.format("%.1f °C", weatherRequest.getMain().getTemp_max()) + " | Ночью " + String.format("%.1f °C", weatherRequest.getMain().getTemp_min()));
+                                    willBe.setText(getResources().getString(R.string.day) + " " + String.format("%.1f °C", weatherRequest.getMain().getTemp_max()) + " | " + getResources().getString(R.string.night) + " " + String.format("%.1f °C", weatherRequest.getMain().getTemp_min()));
                                 } else {
                                     temperature.setText(String.format("%.1f °F", (weatherRequest.getMain().getTemp())*32));
-                                    willBe.setText("Днём " + String.format("%.1f °F", (weatherRequest.getMain().getTemp())*32) + " | Ночью " + String.format("%.1f °F", (weatherRequest.getMain().getTemp())*32));
+                                    willBe.setText(getResources().getString(R.string.day) + " " + String.format("%.1f °F", (weatherRequest.getMain().getTemp())*32) + " | " + getResources().getString(R.string.night) + " " + String.format("%.1f °F", (weatherRequest.getMain().getTemp())*32));
                                 }
                                 if (BaseActivity.mSettings.getBoolean(BaseActivity.APP_PREFERENCES_WIND_SPEED_UNIT, true)){
                                     windSpeedValue.setText(((Integer)weatherRequest.getWind().getSpeed()).toString());
-                                    windSpeedUnits.setText("м/с");
+                                    windSpeedUnits.setText(R.string.wind_speed_count_1);
                                 } else  {
                                     windSpeedValue.setText(String.valueOf((int)(weatherRequest.getWind().getSpeed()*3.6)));
-                                    windSpeedUnits.setText("км/ч");
+                                    windSpeedUnits.setText(R.string.wind_speed_count_2);
                                 }
                                 if (weatherRequest.getWeather()[0].getMain().equals("Clouds")) {
                                     weatherImage.setImageResource(R.drawable.cloud);
-                                    weatherType.setText("Облачно");
+                                    weatherType.setText(R.string.cloud);
                                 }
                                 if (weatherRequest.getWeather()[0].getMain().equals("Clear")) {
                                     weatherImage.setImageResource(R.drawable.sun);
-                                    weatherType.setText("Солнечно");
+                                    weatherType.setText(R.string.clear);
                                 }
                                 if (weatherRequest.getWeather()[0].getMain().equals("Rain")) {
                                     weatherImage.setImageResource(R.drawable.rain);
-                                    weatherType.setText("Дождь");
+                                    weatherType.setText(R.string.rain);
                                 }
                                 pressureValue.setText(((Integer)weatherRequest.getMain().getPressure()).toString());
                                 humidityValue.setText(((Integer)weatherRequest.getMain().getHumidity()).toString());

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Weather Application</string>
+    <string name="future_day_night">Day | Night</string>
+    <string name="choose_city">Choose city:</string>
+    <string name="wind_speed">Show wind speed</string>
+    <string name="pressure">Show atmospheric pressure</string>
+    <string name="accept">Accept</string>
+    <string name="settings">Settings</string>
+    <string name="dark_theme">Dark theme</string>
+    <string name="temperature">Atmospheric pressure units:</string>
+    <string name="C">°C</string>
+    <string name="F">°F</string>
+    <string name="wind_speed_count">Wind speed units:</string>
+    <string name="wind_speed_count_1">m/s</string>
+    <string name="wind_speed_count_2">km/h</string>
+    <string name="settings_btn">Settings</string>
+    <string name="settings_accept">Accept</string>
+    <string name="info">City info</string>
+    <string name="windSpeed">Wind speed:</string>
+    <string name="pressureWeather">Pressure:</string>
+    <string name="pressure_units">мм рт.ст.</string>
+    <string name="humidity">Humidity:</string>
+    <string name="humidity_units">%</string>
+    <string name="cloud">Cloudy</string>
+    <string name="clear">Clear</string>
+    <string name="rain">Precipitation</string>
+    <string name="day">Day</string>
+    <string name="night">Night</string>
+
+    <string-array name="cities">
+        <item>Kaliningrad</item>
+        <item>Moscow</item>
+        <item>Saint Petersburg</item>
+        <item>Novosibirsk</item>
+        <item>Krasnoyarsk</item>
+        <item>Tver</item>
+        <item>Omsk</item>
+        <item>Krasnodar</item>
+        <item>Arkhangelsk</item>
+    </string-array>
+
+    <string-array name="days">
+        <item>Tomorrow</item>
+        <item>Day after tomorrow</item>
+        <item>After two days</item>
+        <item>After three days</item>
+        <item>After four days</item>
+    </string-array>
+
+</resources>

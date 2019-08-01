@@ -16,36 +16,19 @@
             android:id="@+id/day"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/tomorrow"
-            android:textColor="@android:color/white"
-            android:textAlignment="center"
-            android:shadowColor="@android:color/black"
-            android:shadowRadius="2"
-            android:shadowDx="2"
-            android:shadowDy="2"/>
+            android:textAlignment="center"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/future_day_night"
-            android:textColor="@android:color/white"
-            android:textAlignment="center"
-            android:shadowColor="@android:color/black"
-            android:shadowRadius="2"
-            android:shadowDx="2"
-            android:shadowDy="2" />
+            android:textAlignment="center" />
 
         <TextView
             android:id="@+id/day_night"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/tomorrow_day_night"
-            android:textColor="@android:color/white"
-            android:textAlignment="center"
-            android:shadowColor="@android:color/black"
-            android:shadowRadius="2"
-            android:shadowDx="2"
-            android:shadowDy="2"/>
+            android:textAlignment="center" />
 
     </LinearLayout>
 
@@ -66,13 +49,6 @@
             android:id="@+id/text_weather_type"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/tomorrow_weath_type"
-            android:textColor="@android:color/white"
-            android:textAlignment="center"
-            android:shadowColor="@android:color/black"
-            android:shadowRadius="2"
-            android:shadowDx="2"
-            android:shadowDy="2"/>
-
+            android:textAlignment="center" />
     </LinearLayout>
 </LinearLayout>
