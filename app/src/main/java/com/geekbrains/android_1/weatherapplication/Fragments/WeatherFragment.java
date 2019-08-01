@@ -50,11 +50,9 @@ import javax.net.ssl.HttpsURLConnection;
 public class WeatherFragment extends Fragment {
 
 
-    private boolean isLand;
-    public TextView tv;
+    private TextView tv;
     private TextView temperature;
     private TextView windSpeedUnits;
-    private TextView date;
     private LinearLayout windSpeed;
     private LinearLayout pressure;
     private TextView pressureValue;
@@ -80,7 +78,7 @@ public class WeatherFragment extends Fragment {
         windSpeedUnits = layout.findViewById(R.id.windSpeed_units);
         windSpeed = layout.findViewById(R.id.layout3);
         pressure = layout.findViewById(R.id.layout4);
-        date = layout.findViewById(R.id.date);
+        TextView date = layout.findViewById(R.id.date);
         pressureValue = layout.findViewById(R.id.pressure_value);
         windSpeedValue = layout.findViewById(R.id.windSpeed_value);
         willBe = layout.findViewById(R.id.willBe);
@@ -115,10 +113,11 @@ public class WeatherFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        isLand = getResources().getConfiguration().orientation == Configuration. ORIENTATION_LANDSCAPE;
+        boolean isLand = getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
 
         if (isLand) {
-            FutureFragment detail = (FutureFragment) getFragmentManager().findFragmentById(R.id.weather);
+            assert getFragmentManager() != null;
+            FutureFragment detail;
             detail = FutureFragment.create();
             FragmentTransaction ft = getFragmentManager().beginTransaction();
             ft.replace(R.id.weather, detail);
@@ -146,8 +145,6 @@ public class WeatherFragment extends Fragment {
         if (cityName.equals("Saint Petersburg") || cityName.equals("Санкт-Петербург")) url = WeatherData.Saint_Petersburg_WEATHER_URL;
         if (cityName.equals("Novosibirsk") || cityName.equals("Новосибирск")) url = WeatherData.Novosibirsk_WEATHER_URL;
         if (cityName.equals("Krasnoyarsk") || cityName.equals("Красноярск")) url = WeatherData.Krasnoyarsk_WEATHER_URL;
-        if (cityName.equals("Tver") || cityName.equals("Тверь")) url = WeatherData.Tver_WEATHER_URL;
-        if (cityName.equals("Omsk") || cityName.equals("Омск")) url = WeatherData.Omsk_WEATHER_URL;
         if (cityName.equals("Krasnodar") || cityName.equals("Краснодар")) url = WeatherData.Krasnodar_WEATHER_URL;
         if (cityName.equals("Arkhangelsk") || cityName.equals("Архангельск")) url = WeatherData.Arkhangelsk_WEATHER_URL;
 
@@ -189,14 +186,17 @@ public class WeatherFragment extends Fragment {
                                 if (weatherRequest.getWeather()[0].getMain().equals("Clouds")) {
                                     weatherImage.setImageResource(R.drawable.cloud);
                                     weatherType.setText(R.string.cloud);
+                                    getActivity().getWindow().setBackgroundDrawableResource(R.drawable.cloudy);
                                 }
                                 if (weatherRequest.getWeather()[0].getMain().equals("Clear")) {
                                     weatherImage.setImageResource(R.drawable.sun);
                                     weatherType.setText(R.string.clear);
+                                    getActivity().getWindow().setBackgroundDrawableResource(R.drawable.sunny);
                                 }
                                 if (weatherRequest.getWeather()[0].getMain().equals("Rain")) {
                                     weatherImage.setImageResource(R.drawable.rain);
                                     weatherType.setText(R.string.rain);
+                                    getActivity().getWindow().setBackgroundDrawableResource(R.drawable.rainy);
                                 }
                                 pressureValue.setText(((Integer)weatherRequest.getMain().getPressure()).toString());
                                 humidityValue.setText(((Integer)weatherRequest.getMain().getHumidity()).toString());

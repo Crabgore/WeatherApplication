@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -103,8 +102,6 @@ public class FutureFragment extends Fragment {
         if (cityName.equals("Saint Petersburg") || cityName.equals("Санкт-Петербург")) url = WeatherData.FUTURE_Saint_Petersburg_WEATHER_URL;
         if (cityName.equals("Novosibirsk") || cityName.equals("Новосибирск")) url = WeatherData.FUTURE_Novosibirsk_WEATHER_URL;
         if (cityName.equals("Krasnoyarsk") || cityName.equals("Красноярск")) url = WeatherData.FUTURE_Krasnoyarsk_WEATHER_URL;
-        if (cityName.equals("Tver") || cityName.equals("Тверь")) url = WeatherData.FUTURE_Tver_WEATHER_URL;
-        if (cityName.equals("Omsk") || cityName.equals("Омск")) url = WeatherData.FUTURE_Omsk_WEATHER_URL;
         if (cityName.equals("Krasnodar") || cityName.equals("Краснодар")) url = WeatherData.FUTURE_Krasnodar_WEATHER_URL;
         if (cityName.equals("Arkhangelsk") || cityName.equals("Архангельск")) url = WeatherData.FUTURE_Arkhangelsk_WEATHER_URL;
 
