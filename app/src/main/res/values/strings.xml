@@ -26,6 +26,16 @@
     <string name="rain">Осадки</string>
     <string name="day">Днём</string>
     <string name="night">Ночью</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="navigation_header">Navigation header</string>
+    <string name="username">Username</string>
+    <string name="usermail">Usermail</string>
+    <string name="feedback">Форма обратной связи</string>
+    <string name="msg">Введите ваше сообщение</string>
+    <string name="send">Отправить</string>
+    <string name="developer_information">Здесь, судя по всему должна быть информация обо мне, как о разработчике данного приложения. Но пока здесь ничего нет, так как я только в начале своего профессионального пути :)</string>
+    <string name="weather_visual">визуальное отображение погоды</string>
 
     <string-array name="cities">
         <item>Калининград</item>

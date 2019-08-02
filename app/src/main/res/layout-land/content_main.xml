@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/main"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,19 +8,26 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".MainActivity"
-    tools:showIn="@layout/activity_main">
+    tools:showIn="@layout/app_bar_main">
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <fragment
-            android:name="com.geekbrains.android_1.weatherapplication.Fragments.WeatherFragment"
-            android:id="@+id/cities"
-            android:layout_weight="2"
+        <FrameLayout
+            android:id="@+id/sss"
             android:layout_width="0px"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_weight="2">
+        </FrameLayout>
+
+        <!--<fragment-->
+            <!--android:name="com.geekbrains.android_1.weatherapplication.Fragments.WeatherFragment"-->
+            <!--android:id="@+id/cities"-->
+            <!--android:layout_weight="2"-->
+            <!--android:layout_width="0px"-->
+            <!--android:layout_height="match_parent" />-->
 
         <FrameLayout
             android:id="@+id/weather"

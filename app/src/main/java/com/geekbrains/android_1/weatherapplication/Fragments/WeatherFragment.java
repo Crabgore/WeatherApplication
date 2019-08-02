@@ -171,7 +171,7 @@ public class WeatherFragment extends Fragment {
                             public void run() {
                                 if (BaseActivity.mSettings.getBoolean(BaseActivity.APP_PREFERENCES_TEMP_UNIT, true)){
                                     temperature.setText(String.format("%.1f °C", weatherRequest.getMain().getTemp()));
-                                    willBe.setText(getResources().getString(R.string.day) + " " + String.format("%.1f °C", weatherRequest.getMain().getTemp_max()) + " | " + getResources().getString(R.string.night) + " " + String.format("%.1f °C", weatherRequest.getMain().getTemp_min()));
+                                    willBe.setText(getActivity().getResources().getString(R.string.day) + " " + String.format("%.1f °C", weatherRequest.getMain().getTemp_max()) + " | " + getActivity().getResources().getString(R.string.night) + " " + String.format("%.1f °C", weatherRequest.getMain().getTemp_min()));
                                 } else {
                                     temperature.setText(String.format("%.1f °F", (weatherRequest.getMain().getTemp())*32));
                                     willBe.setText(getResources().getString(R.string.day) + " " + String.format("%.1f °F", (weatherRequest.getMain().getTemp())*32) + " | " + getResources().getString(R.string.night) + " " + String.format("%.1f °F", (weatherRequest.getMain().getTemp())*32));

@@ -68,7 +68,7 @@ public class FutureFragment extends Fragment {
         SetWeather(Objects.requireNonNull(BaseActivity.mSettings.getString(BaseActivity.CHOSEN_CITY, "")));
 
         try {
-            Thread.sleep(500);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -122,17 +122,17 @@ public class FutureFragment extends Fragment {
                         Gson gson = new Gson();
                         final FutureWeatherRequest futureWeatherRequest = gson.fromJson(result, FutureWeatherRequest.class);
                         if (BaseActivity.mSettings.getBoolean(BaseActivity.APP_PREFERENCES_TEMP_UNIT, true)){
-                            dayNight.add(String.format("%.1f °C", futureWeatherRequest.getList()[0].getMain().getTemp_min()) + " | " + String.format("%.1f °C", futureWeatherRequest.getList()[0].getMain().getTemp_max()));
-                            dayNight.add(String.format("%.1f °C", futureWeatherRequest.getList()[1].getMain().getTemp_min()) + " | " + String.format("%.1f °C", futureWeatherRequest.getList()[1].getMain().getTemp_max()));
-                            dayNight.add(String.format("%.1f °C", futureWeatherRequest.getList()[2].getMain().getTemp_min()) + " | " + String.format("%.1f °C", futureWeatherRequest.getList()[2].getMain().getTemp_max()));
-                            dayNight.add(String.format("%.1f °C", futureWeatherRequest.getList()[3].getMain().getTemp_min()) + " | " + String.format("%.1f °C", futureWeatherRequest.getList()[3].getMain().getTemp_max()));
-                            dayNight.add(String.format("%.1f °C", futureWeatherRequest.getList()[4].getMain().getTemp_min()) + " | " + String.format("%.1f °C", futureWeatherRequest.getList()[4].getMain().getTemp_max()));
+                            dayNight.add(String.format("%.1f °C", futureWeatherRequest.getList()[0].getMain().getTemp_max()) + " | " + String.format("%.1f °C", futureWeatherRequest.getList()[0].getMain().getTemp_min()));
+                            dayNight.add(String.format("%.1f °C", futureWeatherRequest.getList()[1].getMain().getTemp_max()) + " | " + String.format("%.1f °C", futureWeatherRequest.getList()[1].getMain().getTemp_min()));
+                            dayNight.add(String.format("%.1f °C", futureWeatherRequest.getList()[2].getMain().getTemp_max()) + " | " + String.format("%.1f °C", futureWeatherRequest.getList()[2].getMain().getTemp_min()));
+                            dayNight.add(String.format("%.1f °C", futureWeatherRequest.getList()[3].getMain().getTemp_max()) + " | " + String.format("%.1f °C", futureWeatherRequest.getList()[3].getMain().getTemp_min()));
+                            dayNight.add(String.format("%.1f °C", futureWeatherRequest.getList()[4].getMain().getTemp_max()) + " | " + String.format("%.1f °C", futureWeatherRequest.getList()[4].getMain().getTemp_min()));
                         } else {
-                            dayNight.add(String.format("%.1f °F", (futureWeatherRequest.getList()[0].getMain().getTemp_min())*32) + " | " + String.format("%.1f °F", (futureWeatherRequest.getList()[0].getMain().getTemp_max())*32));
-                            dayNight.add(String.format("%.1f °F", (futureWeatherRequest.getList()[1].getMain().getTemp_min())*32) + " | " + String.format("%.1f °F", (futureWeatherRequest.getList()[1].getMain().getTemp_max())*32));
-                            dayNight.add(String.format("%.1f °F", (futureWeatherRequest.getList()[2].getMain().getTemp_min())*32) + " | " + String.format("%.1f °F", (futureWeatherRequest.getList()[2].getMain().getTemp_max())*32));
-                            dayNight.add(String.format("%.1f °F", (futureWeatherRequest.getList()[3].getMain().getTemp_min())*32) + " | " + String.format("%.1f °F", (futureWeatherRequest.getList()[3].getMain().getTemp_max())*32));
-                            dayNight.add(String.format("%.1f °F", (futureWeatherRequest.getList()[4].getMain().getTemp_min())*32) + " | " + String.format("%.1f °F", (futureWeatherRequest.getList()[4].getMain().getTemp_max())*32));
+                            dayNight.add(String.format("%.1f °F", (futureWeatherRequest.getList()[0].getMain().getTemp_max())*32) + " | " + String.format("%.1f °F", (futureWeatherRequest.getList()[0].getMain().getTemp_min())*32));
+                            dayNight.add(String.format("%.1f °F", (futureWeatherRequest.getList()[1].getMain().getTemp_max())*32) + " | " + String.format("%.1f °F", (futureWeatherRequest.getList()[1].getMain().getTemp_min())*32));
+                            dayNight.add(String.format("%.1f °F", (futureWeatherRequest.getList()[2].getMain().getTemp_max())*32) + " | " + String.format("%.1f °F", (futureWeatherRequest.getList()[2].getMain().getTemp_min())*32));
+                            dayNight.add(String.format("%.1f °F", (futureWeatherRequest.getList()[3].getMain().getTemp_max())*32) + " | " + String.format("%.1f °F", (futureWeatherRequest.getList()[3].getMain().getTemp_min())*32));
+                            dayNight.add(String.format("%.1f °F", (futureWeatherRequest.getList()[4].getMain().getTemp_max())*32) + " | " + String.format("%.1f °F", (futureWeatherRequest.getList()[4].getMain().getTemp_min())*32));
                         }
                         weatherType.add(futureWeatherRequest.getList()[0].getWeather()[0].getMain());
                         weatherType.add(futureWeatherRequest.getList()[1].getWeather()[0].getMain());
