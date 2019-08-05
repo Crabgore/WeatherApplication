@@ -31,6 +31,7 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.concurrent.CountDownLatch;
 import java.util.stream.Collectors;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -40,6 +41,8 @@ import javax.net.ssl.HttpsURLConnection;
  * A simple {@link Fragment} subclass.
  */
 public class FutureFragment extends Fragment {
+
+    final CountDownLatch cdl = new CountDownLatch(1);
 
     private ArrayList<String> dayNight = new ArrayList<>();
     private ArrayList<String> weatherType = new ArrayList<>();
@@ -68,7 +71,7 @@ public class FutureFragment extends Fragment {
         SetWeather(Objects.requireNonNull(BaseActivity.mSettings.getString(BaseActivity.CHOSEN_CITY, "")));
 
         try {
-            Thread.sleep(1000);
+            cdl.await();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -139,6 +142,8 @@ public class FutureFragment extends Fragment {
                         weatherType.add(futureWeatherRequest.getList()[2].getWeather()[0].getMain());
                         weatherType.add(futureWeatherRequest.getList()[3].getWeather()[0].getMain());
                         weatherType.add(futureWeatherRequest.getList()[4].getWeather()[0].getMain());
+
+                        cdl.countDown();
                     } catch (ProtocolException e) {
                         e.printStackTrace();
                     } catch (IOException e) {

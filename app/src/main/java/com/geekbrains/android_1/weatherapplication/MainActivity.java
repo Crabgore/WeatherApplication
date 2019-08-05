@@ -2,11 +2,13 @@ package com.geekbrains.android_1.weatherapplication;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 
 import com.geekbrains.android_1.weatherapplication.Activities.BaseActivity;
 import com.geekbrains.android_1.weatherapplication.Activities.Settings;
 import com.geekbrains.android_1.weatherapplication.Fragments.AboutFragment;
+import com.geekbrains.android_1.weatherapplication.Fragments.FutureFragment;
 import com.geekbrains.android_1.weatherapplication.Fragments.ShareFragment;
 import com.geekbrains.android_1.weatherapplication.Fragments.WeatherFragment;
 import com.google.android.material.navigation.NavigationView;
@@ -40,7 +42,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         details.setArguments(getIntent().getExtras());
         getSupportFragmentManager()
                 .beginTransaction()
-                .add(R.id.sss, details)
+                .add(R.id.fragment, details)
                 .commit();
 
 
@@ -75,6 +77,12 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             Intent intent = new Intent(MainActivity.this, Settings.class);
             startActivityForResult(intent, SETTINGS);
         }
+        if (id == R.id.action_info){
+            String url = "https://ru.wikipedia.org/wiki/" + BaseActivity.mSettings.getString(BaseActivity.CHOSEN_CITY, "");
+            Uri uri = Uri.parse(url);
+            Intent browser = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(browser);
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -84,8 +92,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_home) {
-            // Handle the camera action
+        if (id == R.id.nav_future) {
+            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+                FutureFragment details = new FutureFragment();
+                NavBarMenu(details);
+            }
         } else if (id == R.id.nav_share) {
             ShareFragment details = new ShareFragment();
             NavBarMenu(details);
@@ -114,18 +125,18 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private void NavBarMenu(Fragment details){
         String backStateName = details.getClass().getName();
         details.setArguments(getIntent().getExtras());
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.sss, details)
-                    .addToBackStack(backStateName)
-                    .commit();
-        } else if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+//        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+//            getSupportFragmentManager()
+//                    .beginTransaction()
+//                    .replace(R.id.fragment, details)
+//                    .addToBackStack(backStateName)
+//                    .commit();
+//        } else if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.main, details)
                     .addToBackStack(backStateName)
                     .commit();
-        }
+//        }
     }
 }

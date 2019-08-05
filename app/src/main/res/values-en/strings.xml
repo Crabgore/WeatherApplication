@@ -6,7 +6,6 @@
     <string name="wind_speed">Show wind speed</string>
     <string name="pressure">Show atmospheric pressure</string>
     <string name="accept">Accept</string>
-    <string name="settings">Settings</string>
     <string name="dark_theme">Dark theme</string>
     <string name="temperature">Atmospheric pressure units:</string>
     <string name="C">°C</string>
@@ -16,7 +15,6 @@
     <string name="wind_speed_count_2">km/h</string>
     <string name="settings_btn">Settings</string>
     <string name="settings_accept">Accept</string>
-    <string name="info">City info</string>
     <string name="windSpeed">Wind speed:</string>
     <string name="pressureWeather">Pressure:</string>
     <string name="pressure_units">мм рт.ст.</string>
@@ -37,6 +35,11 @@
     <string name="send">Send</string>
     <string name="developer_information">Здесь, судя по всему должна быть информация обо мне, как о разработчике данного приложения. Но пока здесь ничего нет, так как я только в начале своего профессионального пути :)</string>
     <string name="weather_visual">weather visual</string>
+    <string name="about">About developer</string>
+    <string name="communicate">Communicate</string>
+    <string name="forecast">Forecast</string>
+    <string name="settings">Settings</string>
+    <string name="info">City info</string>
 
     <string-array name="cities">
         <item>Kaliningrad</item>

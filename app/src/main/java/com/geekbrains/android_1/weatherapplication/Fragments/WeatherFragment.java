@@ -50,7 +50,7 @@ import javax.net.ssl.HttpsURLConnection;
 public class WeatherFragment extends Fragment {
 
 
-    private TextView tv;
+    private TextView city;
     private TextView temperature;
     private TextView windSpeedUnits;
     private LinearLayout windSpeed;
@@ -69,11 +69,9 @@ public class WeatherFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        Button info;
-
         View layout = inflater.inflate(R.layout.fragment_weather, container, false);
 
-        tv = layout.findViewById(R.id.city);
+        city = layout.findViewById(R.id.city);
         temperature = layout.findViewById(R.id.temperature);
         windSpeedUnits = layout.findViewById(R.id.windSpeed_units);
         windSpeed = layout.findViewById(R.id.layout3);
@@ -88,23 +86,12 @@ public class WeatherFragment extends Fragment {
 
         SettingsCheck();
 
-        SetWeather(tv.getText().toString());
+        SetWeather(city.getText().toString());
 
         Date currentDate = new Date();
         DateFormat dateFormat = new SimpleDateFormat("EEE, dd MMMM", Locale.getDefault());
         String dateText = dateFormat.format(currentDate);
         date.setText(dateText);
-
-        info = layout.findViewById(R.id.info);
-        info.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String url = "https://ru.wikipedia.org/wiki/" + tv.getText().toString();
-                Uri uri = Uri.parse(url);
-                Intent browser = new Intent(Intent.ACTION_VIEW, uri);
-                startActivity(browser);
-            }
-        });
 
         return layout;
     }
@@ -132,10 +119,9 @@ public class WeatherFragment extends Fragment {
             else windSpeed.setVisibility(View.INVISIBLE);
             if (BaseActivity.mSettings.getBoolean(BaseActivity.APP_PREFERENCES_SHOW_PRESSURE, true)) pressure.setVisibility(View.VISIBLE);
             else pressure.setVisibility(View.INVISIBLE);
-            tv.setText(BaseActivity.mSettings.getString(BaseActivity.CHOSEN_CITY, ""));
+            city.setText(BaseActivity.mSettings.getString(BaseActivity.CHOSEN_CITY, ""));
         }
     }
-
     private void SetWeather(String cityName){
 
         String url = null;
