@@ -10,9 +10,9 @@ import com.geekbrains.android_1.weatherapplication.Activities.Settings;
 import com.geekbrains.android_1.weatherapplication.Fragments.AboutFragment;
 import com.geekbrains.android_1.weatherapplication.Fragments.FutureFragment;
 import com.geekbrains.android_1.weatherapplication.Fragments.ShareFragment;
-import com.geekbrains.android_1.weatherapplication.Fragments.WeatherFragment;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
@@ -37,15 +37,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         initSideMenu(toolbar);
 
         SettingsCheck();
-
-        WeatherFragment details = new WeatherFragment();
-        details.setArguments(getIntent().getExtras());
-        getSupportFragmentManager()
-                .beginTransaction()
-                .add(R.id.fragment, details)
-                .commit();
-
-
     }
 
     private void initSideMenu(Toolbar toolbar) {
@@ -88,7 +79,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
@@ -125,18 +116,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private void NavBarMenu(Fragment details){
         String backStateName = details.getClass().getName();
         details.setArguments(getIntent().getExtras());
-//        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-//            getSupportFragmentManager()
-//                    .beginTransaction()
-//                    .replace(R.id.fragment, details)
-//                    .addToBackStack(backStateName)
-//                    .commit();
-//        } else if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.main, details)
                     .addToBackStack(backStateName)
                     .commit();
-//        }
     }
 }

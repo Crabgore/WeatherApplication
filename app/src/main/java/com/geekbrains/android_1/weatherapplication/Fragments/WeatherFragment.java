@@ -2,9 +2,7 @@ package com.geekbrains.android_1.weatherapplication.Fragments;
 
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.content.res.Configuration;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -18,12 +16,12 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.geekbrains.android_1.weatherapplication.Activities.BaseActivity;
+import com.geekbrains.android_1.weatherapplication.BuildConfig;
 import com.geekbrains.android_1.weatherapplication.Model.Current.WeatherRequest;
 import com.geekbrains.android_1.weatherapplication.R;
 import com.geekbrains.android_1.weatherapplication.WeatherData;
@@ -39,6 +37,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -126,13 +125,13 @@ public class WeatherFragment extends Fragment {
 
         String url = null;
 
-        if (cityName.equals("Moscow") || cityName.equals("Москва")) url = WeatherData.MOSCOW_WEATHER_URL;
-        if (cityName.equals("Kaliningrad") || cityName.equals("Калининград")) url = WeatherData.Kaliningrad_WEATHER_URL;
-        if (cityName.equals("Saint Petersburg") || cityName.equals("Санкт-Петербург")) url = WeatherData.Saint_Petersburg_WEATHER_URL;
-        if (cityName.equals("Novosibirsk") || cityName.equals("Новосибирск")) url = WeatherData.Novosibirsk_WEATHER_URL;
-        if (cityName.equals("Krasnoyarsk") || cityName.equals("Красноярск")) url = WeatherData.Krasnoyarsk_WEATHER_URL;
-        if (cityName.equals("Krasnodar") || cityName.equals("Краснодар")) url = WeatherData.Krasnodar_WEATHER_URL;
-        if (cityName.equals("Arkhangelsk") || cityName.equals("Архангельск")) url = WeatherData.Arkhangelsk_WEATHER_URL;
+        if (cityName.equals("Moscow") || cityName.equals("Москва")) url = WeatherData.MOSCOW_WEATHER_URL + BuildConfig.WEATHER_API_KEY;
+        if (cityName.equals("Kaliningrad") || cityName.equals("Калининград")) url = WeatherData.Kaliningrad_WEATHER_URL + BuildConfig.WEATHER_API_KEY;
+        if (cityName.equals("Saint Petersburg") || cityName.equals("Санкт-Петербург")) url = WeatherData.Saint_Petersburg_WEATHER_URL + BuildConfig.WEATHER_API_KEY;
+        if (cityName.equals("Novosibirsk") || cityName.equals("Новосибирск")) url = WeatherData.Novosibirsk_WEATHER_URL + BuildConfig.WEATHER_API_KEY;
+        if (cityName.equals("Krasnoyarsk") || cityName.equals("Красноярск")) url = WeatherData.Krasnoyarsk_WEATHER_URL + BuildConfig.WEATHER_API_KEY;
+        if (cityName.equals("Krasnodar") || cityName.equals("Краснодар")) url = WeatherData.Krasnodar_WEATHER_URL + BuildConfig.WEATHER_API_KEY;
+        if (cityName.equals("Arkhangelsk") || cityName.equals("Архангельск")) url = WeatherData.Arkhangelsk_WEATHER_URL + BuildConfig.WEATHER_API_KEY;
 
         try {
             final URL uri = new URL(url);
@@ -157,7 +156,7 @@ public class WeatherFragment extends Fragment {
                             public void run() {
                                 if (BaseActivity.mSettings.getBoolean(BaseActivity.APP_PREFERENCES_TEMP_UNIT, true)){
                                     temperature.setText(String.format("%.1f °C", weatherRequest.getMain().getTemp()));
-                                    willBe.setText(getActivity().getResources().getString(R.string.day) + " " + String.format("%.1f °C", weatherRequest.getMain().getTemp_max()) + " | " + getActivity().getResources().getString(R.string.night) + " " + String.format("%.1f °C", weatherRequest.getMain().getTemp_min()));
+                                    willBe.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.day) + " " + String.format("%.1f °C", weatherRequest.getMain().getTemp_max()) + " | " + getActivity().getResources().getString(R.string.night) + " " + String.format("%.1f °C", weatherRequest.getMain().getTemp_min()));
                                 } else {
                                     temperature.setText(String.format("%.1f °F", (weatherRequest.getMain().getTemp())*32));
                                     willBe.setText(getResources().getString(R.string.day) + " " + String.format("%.1f °F", (weatherRequest.getMain().getTemp())*32) + " | " + getResources().getString(R.string.night) + " " + String.format("%.1f °F", (weatherRequest.getMain().getTemp())*32));
@@ -172,17 +171,17 @@ public class WeatherFragment extends Fragment {
                                 if (weatherRequest.getWeather()[0].getMain().equals("Clouds")) {
                                     weatherImage.setImageResource(R.drawable.cloud);
                                     weatherType.setText(R.string.cloud);
-                                    getActivity().getWindow().setBackgroundDrawableResource(R.drawable.cloudy);
+                                    Objects.requireNonNull(getActivity()).getWindow().setBackgroundDrawableResource(R.drawable.cloudy);
                                 }
                                 if (weatherRequest.getWeather()[0].getMain().equals("Clear")) {
                                     weatherImage.setImageResource(R.drawable.sun);
                                     weatherType.setText(R.string.clear);
-                                    getActivity().getWindow().setBackgroundDrawableResource(R.drawable.sunny);
+                                    Objects.requireNonNull(getActivity()).getWindow().setBackgroundDrawableResource(R.drawable.sunny);
                                 }
                                 if (weatherRequest.getWeather()[0].getMain().equals("Rain")) {
                                     weatherImage.setImageResource(R.drawable.rain);
                                     weatherType.setText(R.string.rain);
-                                    getActivity().getWindow().setBackgroundDrawableResource(R.drawable.rainy);
+                                    Objects.requireNonNull(getActivity()).getWindow().setBackgroundDrawableResource(R.drawable.rainy);
                                 }
                                 pressureValue.setText(((Integer)weatherRequest.getMain().getPressure()).toString());
                                 humidityValue.setText(((Integer)weatherRequest.getMain().getHumidity()).toString());

@@ -2,6 +2,8 @@ package com.geekbrains.android_1.weatherapplication.Fragments;
 
 
 import android.annotation.SuppressLint;
+import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -18,6 +20,7 @@ import android.view.ViewGroup;
 
 import com.geekbrains.android_1.weatherapplication.Activities.BaseActivity;
 import com.geekbrains.android_1.weatherapplication.Adapters.FutureAdapter;
+import com.geekbrains.android_1.weatherapplication.BuildConfig;
 import com.geekbrains.android_1.weatherapplication.Model.Future.FutureWeatherRequest;
 import com.geekbrains.android_1.weatherapplication.R;
 import com.geekbrains.android_1.weatherapplication.WeatherData;
@@ -42,7 +45,7 @@ import javax.net.ssl.HttpsURLConnection;
  */
 public class FutureFragment extends Fragment {
 
-    final CountDownLatch cdl = new CountDownLatch(1);
+    private final CountDownLatch cdl = new CountDownLatch(1);
 
     private ArrayList<String> dayNight = new ArrayList<>();
     private ArrayList<String> weatherType = new ArrayList<>();
@@ -67,6 +70,10 @@ public class FutureFragment extends Fragment {
         String[] data = getResources().getStringArray(R.array.days);
 
         View layout = inflater.inflate(R.layout.fragment_future, container, false);
+
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            layout.setBackgroundColor(Color.parseColor("#ff33b5e5"));
+        }
 
         SetWeather(Objects.requireNonNull(BaseActivity.mSettings.getString(BaseActivity.CHOSEN_CITY, "")));
 
@@ -100,13 +107,13 @@ public class FutureFragment extends Fragment {
 
         String url = null;
 
-        if (cityName.equals("Moscow") || cityName.equals("Москва")) url = WeatherData.FUTURE_MOSCOW_WEATHER_URL;
-        if (cityName.equals("Kaliningrad") || cityName.equals("Калининград")) url = WeatherData.FUTURE_Kaliningrad_WEATHER_URL;
-        if (cityName.equals("Saint Petersburg") || cityName.equals("Санкт-Петербург")) url = WeatherData.FUTURE_Saint_Petersburg_WEATHER_URL;
-        if (cityName.equals("Novosibirsk") || cityName.equals("Новосибирск")) url = WeatherData.FUTURE_Novosibirsk_WEATHER_URL;
-        if (cityName.equals("Krasnoyarsk") || cityName.equals("Красноярск")) url = WeatherData.FUTURE_Krasnoyarsk_WEATHER_URL;
-        if (cityName.equals("Krasnodar") || cityName.equals("Краснодар")) url = WeatherData.FUTURE_Krasnodar_WEATHER_URL;
-        if (cityName.equals("Arkhangelsk") || cityName.equals("Архангельск")) url = WeatherData.FUTURE_Arkhangelsk_WEATHER_URL;
+        if (cityName.equals("Moscow") || cityName.equals("Москва")) url = WeatherData.FUTURE_MOSCOW_WEATHER_URL + BuildConfig.WEATHER_API_KEY;
+        if (cityName.equals("Kaliningrad") || cityName.equals("Калининград")) url = WeatherData.FUTURE_Kaliningrad_WEATHER_URL + BuildConfig.WEATHER_API_KEY;
+        if (cityName.equals("Saint Petersburg") || cityName.equals("Санкт-Петербург")) url = WeatherData.FUTURE_Saint_Petersburg_WEATHER_URL + BuildConfig.WEATHER_API_KEY;
+        if (cityName.equals("Novosibirsk") || cityName.equals("Новосибирск")) url = WeatherData.FUTURE_Novosibirsk_WEATHER_URL + BuildConfig.WEATHER_API_KEY;
+        if (cityName.equals("Krasnoyarsk") || cityName.equals("Красноярск")) url = WeatherData.FUTURE_Krasnoyarsk_WEATHER_URL + BuildConfig.WEATHER_API_KEY;
+        if (cityName.equals("Krasnodar") || cityName.equals("Краснодар")) url = WeatherData.FUTURE_Krasnodar_WEATHER_URL + BuildConfig.WEATHER_API_KEY;
+        if (cityName.equals("Arkhangelsk") || cityName.equals("Архангельск")) url = WeatherData.FUTURE_Arkhangelsk_WEATHER_URL + BuildConfig.WEATHER_API_KEY;
 
         try {
             final URL uri = new URL(url);

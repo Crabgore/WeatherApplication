@@ -39,6 +39,7 @@
     <string name="forecast">Прогноз</string>
     <string name="settings">Настройки</string>
     <string name="info">О городе</string>
+    <string name="user_s_avatar">User\'s avatar</string>
 
     <string-array name="cities">
         <item>Калининград</item>

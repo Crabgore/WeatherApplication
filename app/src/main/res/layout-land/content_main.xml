@@ -13,21 +13,14 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <FrameLayout
-            android:id="@+id/fragment"
+        android:layout_height="match_parent"
+        android:baselineAligned="false">
+        <fragment
+            android:name="com.geekbrains.android_1.weatherapplication.Fragments.WeatherFragment"
+            android:id="@+id/cities"
+            android:layout_weight="2"
             android:layout_width="0px"
-            android:layout_height="match_parent"
-            android:layout_weight="2">
-        </FrameLayout>
-
-        <!--<fragment-->
-            <!--android:name="com.geekbrains.android_1.weatherapplication.Fragments.WeatherFragment"-->
-            <!--android:id="@+id/cities"-->
-            <!--android:layout_weight="2"-->
-            <!--android:layout_width="0px"-->
-            <!--android:layout_height="match_parent" />-->
+            android:layout_height="match_parent" />
 
         <FrameLayout
             android:id="@+id/weather"
@@ -35,7 +28,5 @@
             android:layout_height="match_parent"
             android:layout_weight="1">
         </FrameLayout>
-
     </LinearLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
