@@ -17,7 +17,6 @@
         android:textAlignment="center"
         android:textSize="24sp"
         android:textStyle="bold"
-        android:textColor="@android:color/black"
         app:layout_constraintBottom_toTopOf="@+id/msg"
         app:layout_constraintTop_toTopOf="parent" />
 

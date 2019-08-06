@@ -22,6 +22,7 @@
     <string name="cloud">Облачно</string>
     <string name="clear">Ясно</string>
     <string name="rain">Осадки</string>
+    <string name="mist">Туман</string>
     <string name="day">Днём</string>
     <string name="night">Ночью</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>

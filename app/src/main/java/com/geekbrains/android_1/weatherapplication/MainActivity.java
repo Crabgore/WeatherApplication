@@ -36,7 +36,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         initSideMenu(toolbar);
 
-        SettingsCheck();
+        settingsCheck();
     }
 
     private void initSideMenu(Toolbar toolbar) {
@@ -86,14 +86,14 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         if (id == R.id.nav_future) {
             if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
                 FutureFragment details = new FutureFragment();
-                NavBarMenu(details);
+                navBarMenu(details);
             }
         } else if (id == R.id.nav_share) {
             ShareFragment details = new ShareFragment();
-            NavBarMenu(details);
+            navBarMenu(details);
         } else if (id == R.id.nav_about) {
             AboutFragment details = new AboutFragment();
-            NavBarMenu(details);
+            navBarMenu(details);
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -106,14 +106,19 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         recreate();
     }
 
-    private void SettingsCheck(){
-        if (BaseActivity.mSettings == null){
+    private void settingsCheck(){
+
+        String s = BaseActivity.mSettings.getString(BaseActivity.CHOSEN_CITY, "");
+
+        assert s != null;
+        if (s.equals("")){
             Intent intent = new Intent(MainActivity.this, Settings.class);
+
             startActivityForResult(intent, SETTINGS);
         }
     }
 
-    private void NavBarMenu(Fragment details){
+    private void navBarMenu(Fragment details){
         String backStateName = details.getClass().getName();
         details.setArguments(getIntent().getExtras());
             getSupportFragmentManager()

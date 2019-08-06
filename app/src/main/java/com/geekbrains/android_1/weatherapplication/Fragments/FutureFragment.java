@@ -3,7 +3,7 @@ package com.geekbrains.android_1.weatherapplication.Fragments;
 
 import android.annotation.SuppressLint;
 import android.content.res.Configuration;
-import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -58,12 +58,6 @@ public class FutureFragment extends Fragment {
         return f;
     }
 
-
-    public FutureFragment() {
-        // Required empty public constructor
-    }
-
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -71,11 +65,10 @@ public class FutureFragment extends Fragment {
 
         View layout = inflater.inflate(R.layout.fragment_future, container, false);
 
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            layout.setBackgroundColor(Color.parseColor("#ff33b5e5"));
-        }
+        int back = Objects.requireNonNull(getActivity()).getWindow().getStatusBarColor();
+        layout.setBackgroundColor(back);
 
-        SetWeather(Objects.requireNonNull(BaseActivity.mSettings.getString(BaseActivity.CHOSEN_CITY, "")));
+        setWeather(Objects.requireNonNull(BaseActivity.mSettings.getString(BaseActivity.CHOSEN_CITY, "")));
 
         try {
             cdl.await();
@@ -103,17 +96,40 @@ public class FutureFragment extends Fragment {
         recyclerView.addItemDecoration(itemDecoration);
     }
 
-    private void SetWeather(String cityName){
+    private void setWeather(String cityName){
 
         String url = null;
 
-        if (cityName.equals("Moscow") || cityName.equals("Москва")) url = WeatherData.FUTURE_MOSCOW_WEATHER_URL + BuildConfig.WEATHER_API_KEY;
-        if (cityName.equals("Kaliningrad") || cityName.equals("Калининград")) url = WeatherData.FUTURE_Kaliningrad_WEATHER_URL + BuildConfig.WEATHER_API_KEY;
-        if (cityName.equals("Saint Petersburg") || cityName.equals("Санкт-Петербург")) url = WeatherData.FUTURE_Saint_Petersburg_WEATHER_URL + BuildConfig.WEATHER_API_KEY;
-        if (cityName.equals("Novosibirsk") || cityName.equals("Новосибирск")) url = WeatherData.FUTURE_Novosibirsk_WEATHER_URL + BuildConfig.WEATHER_API_KEY;
-        if (cityName.equals("Krasnoyarsk") || cityName.equals("Красноярск")) url = WeatherData.FUTURE_Krasnoyarsk_WEATHER_URL + BuildConfig.WEATHER_API_KEY;
-        if (cityName.equals("Krasnodar") || cityName.equals("Краснодар")) url = WeatherData.FUTURE_Krasnodar_WEATHER_URL + BuildConfig.WEATHER_API_KEY;
-        if (cityName.equals("Arkhangelsk") || cityName.equals("Архангельск")) url = WeatherData.FUTURE_Arkhangelsk_WEATHER_URL + BuildConfig.WEATHER_API_KEY;
+        switch (cityName) {
+            case "Moscow":
+            case "Москва":
+                url = WeatherData.FUTURE_MOSCOW_WEATHER_URL + BuildConfig.WEATHER_API_KEY;
+                break;
+            case "Kaliningrad":
+            case "Калининград":
+                url = WeatherData.FUTURE_Kaliningrad_WEATHER_URL + BuildConfig.WEATHER_API_KEY;
+                break;
+            case "Saint Petersburg":
+            case "Санкт-Петербург":
+                url = WeatherData.FUTURE_Saint_Petersburg_WEATHER_URL + BuildConfig.WEATHER_API_KEY;
+                break;
+            case "Novosibirsk":
+            case "Новосибирск":
+                url = WeatherData.FUTURE_Novosibirsk_WEATHER_URL + BuildConfig.WEATHER_API_KEY;
+                break;
+            case "Krasnoyarsk":
+            case "Красноярск":
+                url = WeatherData.FUTURE_Krasnoyarsk_WEATHER_URL + BuildConfig.WEATHER_API_KEY;
+                break;
+            case "Krasnodar":
+            case "Краснодар":
+                url = WeatherData.FUTURE_Krasnodar_WEATHER_URL + BuildConfig.WEATHER_API_KEY;
+                break;
+            case "Arkhangelsk":
+            case "Архангельск":
+                url = WeatherData.FUTURE_Arkhangelsk_WEATHER_URL + BuildConfig.WEATHER_API_KEY;
+                break;
+        }
 
         try {
             final URL uri = new URL(url);
@@ -132,24 +148,17 @@ public class FutureFragment extends Fragment {
                         Gson gson = new Gson();
                         final FutureWeatherRequest futureWeatherRequest = gson.fromJson(result, FutureWeatherRequest.class);
                         if (BaseActivity.mSettings.getBoolean(BaseActivity.APP_PREFERENCES_TEMP_UNIT, true)){
-                            dayNight.add(String.format("%.1f °C", futureWeatherRequest.getList()[0].getMain().getTemp_max()) + " | " + String.format("%.1f °C", futureWeatherRequest.getList()[0].getMain().getTemp_min()));
-                            dayNight.add(String.format("%.1f °C", futureWeatherRequest.getList()[1].getMain().getTemp_max()) + " | " + String.format("%.1f °C", futureWeatherRequest.getList()[1].getMain().getTemp_min()));
-                            dayNight.add(String.format("%.1f °C", futureWeatherRequest.getList()[2].getMain().getTemp_max()) + " | " + String.format("%.1f °C", futureWeatherRequest.getList()[2].getMain().getTemp_min()));
-                            dayNight.add(String.format("%.1f °C", futureWeatherRequest.getList()[3].getMain().getTemp_max()) + " | " + String.format("%.1f °C", futureWeatherRequest.getList()[3].getMain().getTemp_min()));
-                            dayNight.add(String.format("%.1f °C", futureWeatherRequest.getList()[4].getMain().getTemp_max()) + " | " + String.format("%.1f °C", futureWeatherRequest.getList()[4].getMain().getTemp_min()));
+                            for (int i = 0; i < 5; i++) {
+                                dayNight.add(String.format("%.1f °C", futureWeatherRequest.getList()[i].getMain().getTemp_max()) + " | " + String.format("%.1f °C", futureWeatherRequest.getList()[i].getMain().getTemp_min()));
+                            }
                         } else {
-                            dayNight.add(String.format("%.1f °F", (futureWeatherRequest.getList()[0].getMain().getTemp_max())*32) + " | " + String.format("%.1f °F", (futureWeatherRequest.getList()[0].getMain().getTemp_min())*32));
-                            dayNight.add(String.format("%.1f °F", (futureWeatherRequest.getList()[1].getMain().getTemp_max())*32) + " | " + String.format("%.1f °F", (futureWeatherRequest.getList()[1].getMain().getTemp_min())*32));
-                            dayNight.add(String.format("%.1f °F", (futureWeatherRequest.getList()[2].getMain().getTemp_max())*32) + " | " + String.format("%.1f °F", (futureWeatherRequest.getList()[2].getMain().getTemp_min())*32));
-                            dayNight.add(String.format("%.1f °F", (futureWeatherRequest.getList()[3].getMain().getTemp_max())*32) + " | " + String.format("%.1f °F", (futureWeatherRequest.getList()[3].getMain().getTemp_min())*32));
-                            dayNight.add(String.format("%.1f °F", (futureWeatherRequest.getList()[4].getMain().getTemp_max())*32) + " | " + String.format("%.1f °F", (futureWeatherRequest.getList()[4].getMain().getTemp_min())*32));
+                            for (int i = 0; i < 5; i++) {
+                                dayNight.add(String.format("%.1f °F", ((futureWeatherRequest.getList()[i].getMain().getTemp_max())*1.8) + 32) + " | " + String.format("%.1f °F", ((futureWeatherRequest.getList()[i].getMain().getTemp_min())*1.8) + 32));
+                            }
                         }
-                        weatherType.add(futureWeatherRequest.getList()[0].getWeather()[0].getMain());
-                        weatherType.add(futureWeatherRequest.getList()[1].getWeather()[0].getMain());
-                        weatherType.add(futureWeatherRequest.getList()[2].getWeather()[0].getMain());
-                        weatherType.add(futureWeatherRequest.getList()[3].getWeather()[0].getMain());
-                        weatherType.add(futureWeatherRequest.getList()[4].getWeather()[0].getMain());
-
+                        for (int i = 0; i < 5; i++) {
+                            weatherType.add(futureWeatherRequest.getList()[i].getWeather()[0].getMain());
+                        }
                         cdl.countDown();
                     } catch (ProtocolException e) {
                         e.printStackTrace();

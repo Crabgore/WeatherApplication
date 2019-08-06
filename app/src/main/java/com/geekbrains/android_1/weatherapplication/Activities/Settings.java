@@ -34,7 +34,7 @@ public class Settings extends BaseActivity {
         showPressure = findViewById(R.id.showPressure);
         spinner = findViewById(R.id.citySpinner);
 
-        SettingsCheck();
+        settingsCheck();
 
         SwitchCompat switchTheme = findViewById(R.id.dark_theme_enabler);
         switchTheme.setChecked(isDarkTheme());
@@ -75,7 +75,7 @@ public class Settings extends BaseActivity {
         finish();
     }
 
-    private void SettingsCheck(){
+    private void settingsCheck(){
         if (BaseActivity.mSettings != null){
             if (BaseActivity.mSettings.getBoolean(BaseActivity.APP_PREFERENCES_TEMP_UNIT, true)) ((RadioButton)tempVal.getChildAt(0)).setChecked(true);
             else ((RadioButton)tempVal.getChildAt(1)).setChecked(true);

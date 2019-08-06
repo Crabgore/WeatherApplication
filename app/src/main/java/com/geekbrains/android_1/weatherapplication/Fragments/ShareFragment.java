@@ -1,5 +1,6 @@
 package com.geekbrains.android_1.weatherapplication.Fragments;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,6 +15,8 @@ import android.widget.Toast;
 import com.geekbrains.android_1.weatherapplication.R;
 import com.google.android.material.button.MaterialButton;
 
+import java.util.Objects;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -22,15 +25,13 @@ public class ShareFragment extends Fragment {
 
     private EditText msg;
 
-    public ShareFragment() {
-        // Required empty public constructor
-    }
-
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View layout = inflater.inflate(R.layout.fragment_share, container, false);
+
+        Drawable back = Objects.requireNonNull(getActivity()).getWindow().getDecorView().getBackground();
+        layout.setBackground(back);
 
         msg = layout.findViewById(R.id.msg);
         MaterialButton send = layout.findViewById(R.id.send);
