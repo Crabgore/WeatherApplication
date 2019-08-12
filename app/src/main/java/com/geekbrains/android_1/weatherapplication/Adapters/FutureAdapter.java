@@ -11,15 +11,13 @@ import android.widget.TextView;
 
 import com.geekbrains.android_1.weatherapplication.R;
 
-import java.util.ArrayList;
-
 public class FutureAdapter extends RecyclerView.Adapter<FutureAdapter.ViewHolder> {
 
     private final String[] dataSource;
-    private final ArrayList dayNight;
-    private final ArrayList weatherType;
+    private final String[] dayNight;
+    private final String[] weatherType;
 
-    public FutureAdapter(String[] dataSource, ArrayList dayNight, ArrayList weatherType) {
+    public FutureAdapter(String[] dataSource, String[] dayNight, String[] weatherType) {
         this.dataSource = dataSource;
         this.dayNight = dayNight;
         this.weatherType = weatherType;
@@ -36,16 +34,16 @@ public class FutureAdapter extends RecyclerView.Adapter<FutureAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         viewHolder.getDay().setText(dataSource[i]);
-        viewHolder.getDayNight().setText(dayNight.get(i).toString());
-        if (weatherType.get(i).toString().equals("Clouds")) {
+        viewHolder.getDayNight().setText(dayNight[i]);
+        if (weatherType[i].equals("Clouds")) {
             viewHolder.getImageWeatherType().setImageResource(R.drawable.cloud);
             viewHolder.getTextWeatherType().setText(R.string.cloud);
         }
-        if (weatherType.get(i).toString().equals("Clear")) {
+        if (weatherType[i].equals("Clear")) {
             viewHolder.getImageWeatherType().setImageResource(R.drawable.sun);
             viewHolder.getTextWeatherType().setText(R.string.clear);
         }
-        if (weatherType.get(i).toString().equals("Rain")) {
+        if (weatherType[i].equals("Rain")) {
             viewHolder.getImageWeatherType().setImageResource(R.drawable.rain);
             viewHolder.getTextWeatherType().setText(R.string.rain);
         }
