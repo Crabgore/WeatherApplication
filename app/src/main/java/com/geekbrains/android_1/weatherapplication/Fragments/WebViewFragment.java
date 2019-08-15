@@ -19,6 +19,8 @@ import com.geekbrains.android_1.weatherapplication.Activities.BaseActivity;
 import com.geekbrains.android_1.weatherapplication.OnBackPressedListener;
 import com.geekbrains.android_1.weatherapplication.R;
 
+import java.util.Objects;
+
 public class WebViewFragment extends Fragment implements OnBackPressedListener {
 
     private WebView webView;
@@ -42,7 +44,7 @@ public class WebViewFragment extends Fragment implements OnBackPressedListener {
         if(webView.canGoBack()) {
             webView.goBack();
         } else {
-            getActivity().getSupportFragmentManager().popBackStack();
+            Objects.requireNonNull(getActivity()).getSupportFragmentManager().popBackStack();
         }
     }
 
