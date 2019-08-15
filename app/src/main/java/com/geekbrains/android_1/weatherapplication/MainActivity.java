@@ -10,6 +10,7 @@ import com.geekbrains.android_1.weatherapplication.Activities.Settings;
 import com.geekbrains.android_1.weatherapplication.Fragments.AboutFragment;
 import com.geekbrains.android_1.weatherapplication.Fragments.FutureFragment;
 import com.geekbrains.android_1.weatherapplication.Fragments.ShareFragment;
+import com.geekbrains.android_1.weatherapplication.Fragments.WebViewFragment;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
@@ -19,6 +20,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.view.Menu;
 import android.view.MenuItem;
@@ -69,10 +71,14 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             startActivityForResult(intent, SETTINGS);
         }
         if (id == R.id.action_info){
-            String url = "https://ru.wikipedia.org/wiki/" + BaseActivity.mSettings.getString(BaseActivity.CHOSEN_CITY, "");
-            Uri uri = Uri.parse(url);
-            Intent browser = new Intent(Intent.ACTION_VIEW, uri);
-            startActivity(browser);
+            WebViewFragment details = new WebViewFragment();
+            navBarMenu(details);
+
+
+//            String url = "https://ru.wikipedia.org/wiki/" + mSettings.getString(CHOSEN_CITY, "");
+//            Uri uri = Uri.parse(url);
+//            Intent browser = new Intent(Intent.ACTION_VIEW, uri);
+//            startActivity(browser);
         }
 
         return super.onOptionsItemSelected(item);
@@ -108,7 +114,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     private void settingsCheck(){
 
-        String s = BaseActivity.mSettings.getString(BaseActivity.CHOSEN_CITY, "");
+        String s = mSettings.getString(CHOSEN_CITY, "");
 
         assert s != null;
         if (s.equals("")){
@@ -126,5 +132,23 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                     .replace(R.id.main, details)
                     .addToBackStack(backStateName)
                     .commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        FragmentManager fm = getSupportFragmentManager();
+        OnBackPressedListener backPressedListener = null;
+        for (Fragment fragment: fm.getFragments()) {
+            if (fragment instanceof  OnBackPressedListener) {
+                backPressedListener = (OnBackPressedListener) fragment;
+                break;
+            }
+        }
+
+        if (backPressedListener != null) {
+            backPressedListener.onBackPressed();
+        } else {
+            super.onBackPressed();
+        }
     }
 }

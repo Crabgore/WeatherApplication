@@ -9,18 +9,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.geekbrains.android_1.weatherapplication.ExampleItem;
 import com.geekbrains.android_1.weatherapplication.R;
 
+import java.util.ArrayList;
+
 public class FutureAdapter extends RecyclerView.Adapter<FutureAdapter.ViewHolder> {
+    private ArrayList<ExampleItem> mExampleList;
 
-    private final String[] dataSource;
-    private final String[] dayNight;
-    private final String[] weatherType;
-
-    public FutureAdapter(String[] dataSource, String[] dayNight, String[] weatherType) {
-        this.dataSource = dataSource;
-        this.dayNight = dayNight;
-        this.weatherType = weatherType;
+    public FutureAdapter(ArrayList<ExampleItem> exampleList) {
+        mExampleList = exampleList;
     }
 
     @NonNull
@@ -33,25 +31,27 @@ public class FutureAdapter extends RecyclerView.Adapter<FutureAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        viewHolder.getDay().setText(dataSource[i]);
-        viewHolder.getDayNight().setText(dayNight[i]);
-        if (weatherType[i].equals("Clouds")) {
-            viewHolder.getImageWeatherType().setImageResource(R.drawable.cloud);
-            viewHolder.getTextWeatherType().setText(R.string.cloud);
-        }
-        if (weatherType[i].equals("Clear")) {
-            viewHolder.getImageWeatherType().setImageResource(R.drawable.sun);
-            viewHolder.getTextWeatherType().setText(R.string.clear);
-        }
-        if (weatherType[i].equals("Rain")) {
-            viewHolder.getImageWeatherType().setImageResource(R.drawable.rain);
-            viewHolder.getTextWeatherType().setText(R.string.rain);
+        viewHolder.getDay().setText(mExampleList.get(i).getText1());
+        viewHolder.getDayNight().setText(mExampleList.get(i).getText2());
+        switch (mExampleList.get(i).getText3()) {
+            case "Clouds":
+                viewHolder.getImageWeatherType().setImageResource(R.drawable.cloud);
+                viewHolder.getTextWeatherType().setText(R.string.cloud);
+                break;
+            case "Clear":
+                viewHolder.getImageWeatherType().setImageResource(R.drawable.sun);
+                viewHolder.getTextWeatherType().setText(R.string.clear);
+                break;
+            case "Rain":
+                viewHolder.getImageWeatherType().setImageResource(R.drawable.rain);
+                viewHolder.getTextWeatherType().setText(R.string.rain);
+                break;
         }
     }
 
     @Override
     public int getItemCount() {
-        return dataSource.length;
+        return mExampleList.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

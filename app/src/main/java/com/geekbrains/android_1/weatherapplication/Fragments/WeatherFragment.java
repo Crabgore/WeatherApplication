@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
@@ -19,6 +20,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +45,8 @@ import java.util.Objects;
  */
 public class WeatherFragment extends Fragment {
 
+    private static SharedPreferences mSettings;
+
     public final static String BROADCAST_ACTION = "my_weather_application_2";
     private ServiceFinishedReceiver receiver = new ServiceFinishedReceiver();
 
@@ -65,6 +69,7 @@ public class WeatherFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mSettings = PreferenceManager.getDefaultSharedPreferences(getContext());
 
         View layout = inflater.inflate(R.layout.fragment_weather, container, false);
 
@@ -94,7 +99,7 @@ public class WeatherFragment extends Fragment {
             FutureFragment detail;
             detail = FutureFragment.create();
             FragmentTransaction ft = getFragmentManager().beginTransaction();
-            ft.replace(R.id.weather, detail);
+            ft.add(R.id.weather, detail);
             ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
             ft.commit();
         }
@@ -122,11 +127,11 @@ public class WeatherFragment extends Fragment {
     }
 
     private void settingsCheck(){
-        if (BaseActivity.mSettings.getBoolean(BaseActivity.APP_PREFERENCES_SHOW_WIND_SPEED, true)) windSpeed.setVisibility(View.VISIBLE);
+        if (mSettings.getBoolean(BaseActivity.APP_PREFERENCES_SHOW_WIND_SPEED, true)) windSpeed.setVisibility(View.VISIBLE);
         else windSpeed.setVisibility(View.INVISIBLE);
-        if (BaseActivity.mSettings.getBoolean(BaseActivity.APP_PREFERENCES_SHOW_PRESSURE, true)) pressure.setVisibility(View.VISIBLE);
+        if (mSettings.getBoolean(BaseActivity.APP_PREFERENCES_SHOW_PRESSURE, true)) pressure.setVisibility(View.VISIBLE);
         else pressure.setVisibility(View.INVISIBLE);
-        city.setText(BaseActivity.mSettings.getString(BaseActivity.CHOSEN_CITY, ""));
+        city.setText(mSettings.getString(BaseActivity.CHOSEN_CITY, ""));
     }
 
     private void initUI(View layout){
@@ -243,7 +248,7 @@ public class WeatherFragment extends Fragment {
         @Override
         public void onReceive(Context context, Intent intent) {
 
-            String s = BaseActivity.mSettings.getString(BaseActivity.CHOSEN_CITY, "");
+            String s = mSettings.getString(BaseActivity.CHOSEN_CITY, "");
 
             temperature.setText(intent.getStringExtra("temperature"));
             willBe.setText(intent.getStringExtra("willBe"));

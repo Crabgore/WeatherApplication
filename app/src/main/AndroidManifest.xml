@@ -15,6 +15,7 @@
         <activity android:name=".Activities.Settings" />
         <activity android:name=".Activities.FutureActivity" />
         <service android:name=".Services.WeatherRequestService" />
+        <service android:name=".Services.FutureWeatherRequestService" />
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"

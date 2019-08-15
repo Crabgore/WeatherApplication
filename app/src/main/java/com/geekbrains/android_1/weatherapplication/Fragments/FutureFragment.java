@@ -1,17 +1,19 @@
 package com.geekbrains.android_1.weatherapplication.Fragments;
 
-
-import android.annotation.SuppressLint;
-import android.os.Build;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,32 +21,22 @@ import android.view.ViewGroup;
 import com.geekbrains.android_1.weatherapplication.Activities.BaseActivity;
 import com.geekbrains.android_1.weatherapplication.Adapters.FutureAdapter;
 import com.geekbrains.android_1.weatherapplication.BuildConfig;
-import com.geekbrains.android_1.weatherapplication.Model.Future.FutureWeatherRequest;
+import com.geekbrains.android_1.weatherapplication.ExampleItem;
 import com.geekbrains.android_1.weatherapplication.R;
+import com.geekbrains.android_1.weatherapplication.Services.FutureWeatherRequestService;
 import com.geekbrains.android_1.weatherapplication.WeatherData;
-import com.google.gson.Gson;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.URL;
+import java.util.ArrayList;
 import java.util.Objects;
-import java.util.concurrent.CountDownLatch;
 
-import javax.net.ssl.HttpsURLConnection;
-
-
-/**
- * A simple {@link Fragment} subclass.
- */
 public class FutureFragment extends Fragment {
 
-    private final CountDownLatch cdl = new CountDownLatch(1);
+    private FutureAdapter futureAdapter;
 
-    private String[] dayNight = new String[5];
-    private String[] weatherType = new String[5];
+    public final static String FUTURE_BROADCAST_ACTION = "my_future_weather_application_2";
+    private ServiceFinishedReceiver receiver = new ServiceFinishedReceiver();
+
+    private ArrayList<ExampleItem> mExampleList;
 
     static FutureFragment create(){
         FutureFragment f = new FutureFragment();
@@ -57,85 +49,65 @@ public class FutureFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        String[] data = getResources().getStringArray(R.array.days);
+        SharedPreferences mSettings = PreferenceManager.getDefaultSharedPreferences(getContext());
 
         View layout = inflater.inflate(R.layout.fragment_future, container, false);
 
-        int back = Objects.requireNonNull(getActivity()).getWindow().getStatusBarColor();
-        layout.setBackgroundColor(back);
+        createBackground(layout);
 
-        String url = urlRequest(Objects.requireNonNull(BaseActivity.mSettings.getString(BaseActivity.CHOSEN_CITY, "")));
+        String url = urlRequest(Objects.requireNonNull(mSettings.getString(BaseActivity.CHOSEN_CITY, "")));
 
         setWeather(url);
 
-        try {
-            cdl.await();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        createExampleList();
 
-        initRecyclerView(data, dayNight, weatherType, layout);
+        initRecyclerView(mExampleList, layout);
+
+        Objects.requireNonNull(getActivity()).registerReceiver(receiver, new IntentFilter(FUTURE_BROADCAST_ACTION));
 
         return layout;
     }
 
-    private void initRecyclerView(String[] data, String[] dayNight, String[] weatherType, View layout){
+    @Override
+    public void onResume() {
+        super.onResume();
+        Objects.requireNonNull(getActivity()).registerReceiver(receiver, new IntentFilter(FUTURE_BROADCAST_ACTION));
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Objects.requireNonNull(getActivity()).unregisterReceiver(receiver);
+    }
+
+    private void createBackground(View layout) {
+        int back = Objects.requireNonNull(getActivity()).getWindow().getStatusBarColor();
+        layout.setBackgroundColor(back);
+    }
+
+    private void setWeather(String url){
+        Intent intent = new Intent(getActivity(), FutureWeatherRequestService.class);
+        intent.putExtra("city_name", url);
+        Objects.requireNonNull(getActivity()).startService(intent);
+    }
+
+    private void createExampleList(){
+        mExampleList = new ArrayList<>();
+    }
+
+    private void initRecyclerView(ArrayList<ExampleItem> mExampleList, View layout){
         RecyclerView recyclerView = layout.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        FutureAdapter futureAdapter = new FutureAdapter(data, dayNight, weatherType);
+        futureAdapter = new FutureAdapter(mExampleList);
         recyclerView.setAdapter(futureAdapter);
 
         DividerItemDecoration itemDecoration = new DividerItemDecoration(layout.getContext(), LinearLayoutManager.VERTICAL);
         itemDecoration.setDrawable(getResources().getDrawable(R.drawable.separator));
         recyclerView.addItemDecoration(itemDecoration);
-    }
-
-    private void setWeather(String url){
-
-        try {
-            final URL uri = new URL(url);
-            new Thread(new Runnable() {
-                @RequiresApi(api = Build.VERSION_CODES.N)
-                @SuppressLint({"DefaultLocale"})
-                @Override
-                public void run() {
-                    try {
-                        HttpsURLConnection urlConnection;
-                        urlConnection = (HttpsURLConnection) uri.openConnection();
-                        urlConnection.setRequestMethod("GET");
-                        urlConnection.setReadTimeout(10000);
-                        BufferedReader in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-//                        final String result = in.lines().collect(Collectors.joining("\n"));
-                        final String result = in.readLine();
-                        Gson gson = new Gson();
-                        final FutureWeatherRequest futureWeatherRequest = gson.fromJson(result, FutureWeatherRequest.class);
-                        if (BaseActivity.mSettings.getBoolean(BaseActivity.APP_PREFERENCES_TEMP_UNIT, true)){
-                            for (int i = 0; i < 5; i++) {
-                                dayNight[i] = String.format("%.0f °C", futureWeatherRequest.getList()[i].getMain().getTemp_max()) + " | " + String.format("%.0f °C", futureWeatherRequest.getList()[i].getMain().getTemp_min());
-                            }
-                        } else {
-                            for (int i = 0; i < 5; i++) {
-                                dayNight[i] = String.format("%.0f °F", ((futureWeatherRequest.getList()[i].getMain().getTemp_max())*1.8) + 32) + " | " + String.format("%.0f °F", ((futureWeatherRequest.getList()[i].getMain().getTemp_min())*1.8) + 32);
-                            }
-                        }
-                        for (int i = 0; i < 5; i++) {
-                            weatherType[i] = futureWeatherRequest.getList()[i].getWeather()[0].getMain();
-                        }
-                        cdl.countDown();
-                    } catch (ProtocolException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }).start();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
     }
 
     private String urlRequest(String cityName){
@@ -174,5 +146,27 @@ public class FutureFragment extends Fragment {
         }
 
         return url;
+    }
+
+    private class ServiceFinishedReceiver extends BroadcastReceiver {
+        String[] data;
+        String[] dayNight;
+        String[] weatherType;
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            data = getResources().getStringArray(R.array.days);
+            dayNight = intent.getStringArrayExtra("dayNight");
+            weatherType = intent.getStringArrayExtra("weatherType");
+
+            mExampleList.clear();
+
+            for (int i = 0; i < 5; i++) {
+                mExampleList.add(new ExampleItem(data[i], dayNight[i], weatherType[i]));
+
+            }
+
+            futureAdapter.notifyDataSetChanged();
+        }
     }
 }

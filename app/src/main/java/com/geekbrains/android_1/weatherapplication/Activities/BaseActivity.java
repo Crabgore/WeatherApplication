@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 
 import com.geekbrains.android_1.weatherapplication.R;
 
@@ -12,7 +13,6 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public static SharedPreferences mSettings;
 
-    public final static String APP_PREFERENCES = "mysettings";
     public final static String APP_PREFERENCES_TEMP_UNIT = "TEMP_UNIT";
     public final static String APP_PREFERENCES_WIND_SPEED_UNIT = "WIND_SPEED_UNIT";
     public final static String APP_PREFERENCES_SHOW_WIND_SPEED = "SHOW_WIND_SPEED";
@@ -26,7 +26,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mSettings = getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE);
+        mSettings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
         if (isDarkTheme()){
             setTheme(R.style.DarkTheme);

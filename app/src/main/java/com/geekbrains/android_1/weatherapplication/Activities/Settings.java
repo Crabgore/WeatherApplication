@@ -26,8 +26,6 @@ public class Settings extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        mSettings = getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE);
-
         tempVal = findViewById(R.id.temp);
         spdUnt = findViewById(R.id.wind);
         showWindSpeed = findViewById(R.id.showWindSpeed);
@@ -48,42 +46,42 @@ public class Settings extends BaseActivity {
     }
 
     public void settings_accept(View view) {
-        SharedPreferences.Editor editor = BaseActivity.mSettings.edit();
+        SharedPreferences.Editor editor = mSettings.edit();
         if (((RadioButton)tempVal.getChildAt(0)).isChecked()){
-            editor.putBoolean(BaseActivity.APP_PREFERENCES_TEMP_UNIT, true);
+            editor.putBoolean(APP_PREFERENCES_TEMP_UNIT, true);
         } else if (((RadioButton)tempVal.getChildAt(1)).isChecked()){
-            editor.putBoolean(BaseActivity.APP_PREFERENCES_TEMP_UNIT, false);
+            editor.putBoolean(APP_PREFERENCES_TEMP_UNIT, false);
         }
         if (((RadioButton)spdUnt.getChildAt(0)).isChecked()){
-            editor.putBoolean(BaseActivity.APP_PREFERENCES_WIND_SPEED_UNIT, true);
+            editor.putBoolean(APP_PREFERENCES_WIND_SPEED_UNIT, true);
         } else if (((RadioButton)spdUnt.getChildAt(1)).isChecked()){
-            editor.putBoolean(BaseActivity.APP_PREFERENCES_WIND_SPEED_UNIT, false);
+            editor.putBoolean(APP_PREFERENCES_WIND_SPEED_UNIT, false);
         }
         if (showWindSpeed.isChecked()){
-            editor.putBoolean(BaseActivity.APP_PREFERENCES_SHOW_WIND_SPEED, true);
+            editor.putBoolean(APP_PREFERENCES_SHOW_WIND_SPEED, true);
         } else {
-            editor.putBoolean(BaseActivity.APP_PREFERENCES_SHOW_WIND_SPEED, false);
+            editor.putBoolean(APP_PREFERENCES_SHOW_WIND_SPEED, false);
         }
         if (showPressure.isChecked()){
-            editor.putBoolean(BaseActivity.APP_PREFERENCES_SHOW_PRESSURE, true);
+            editor.putBoolean(APP_PREFERENCES_SHOW_PRESSURE, true);
         } else {
-            editor.putBoolean(BaseActivity.APP_PREFERENCES_SHOW_PRESSURE, false);
+            editor.putBoolean(APP_PREFERENCES_SHOW_PRESSURE, false);
         }
-        editor.putString(BaseActivity.CHOSEN_CITY, spinner.getSelectedItem().toString());
-        editor.putInt(BaseActivity.CHOSEN_CITY_ID, spinner.getSelectedItemPosition());
+        editor.putString(CHOSEN_CITY, spinner.getSelectedItem().toString());
+        editor.putInt(CHOSEN_CITY_ID, spinner.getSelectedItemPosition());
         editor.apply();
         finish();
     }
 
     private void settingsCheck(){
-        if (BaseActivity.mSettings != null){
-            if (BaseActivity.mSettings.getBoolean(BaseActivity.APP_PREFERENCES_TEMP_UNIT, true)) ((RadioButton)tempVal.getChildAt(0)).setChecked(true);
+        if (mSettings != null){
+            if (mSettings.getBoolean(APP_PREFERENCES_TEMP_UNIT, true)) ((RadioButton)tempVal.getChildAt(0)).setChecked(true);
             else ((RadioButton)tempVal.getChildAt(1)).setChecked(true);
-            if (BaseActivity.mSettings.getBoolean(BaseActivity.APP_PREFERENCES_WIND_SPEED_UNIT, true)) ((RadioButton)spdUnt.getChildAt(0)).setChecked(true);
+            if (mSettings.getBoolean(APP_PREFERENCES_WIND_SPEED_UNIT, true)) ((RadioButton)spdUnt.getChildAt(0)).setChecked(true);
             else ((RadioButton)spdUnt.getChildAt(1)).setChecked(true);
-            if (BaseActivity.mSettings.getBoolean(BaseActivity.APP_PREFERENCES_SHOW_WIND_SPEED, true)) showWindSpeed.setChecked(true);
-            if (BaseActivity.mSettings.getBoolean(BaseActivity.APP_PREFERENCES_SHOW_PRESSURE, true)) showPressure.setChecked(true);
-            spinner.setSelection(BaseActivity.mSettings.getInt(BaseActivity.CHOSEN_CITY_ID, 0));
+            if (mSettings.getBoolean(APP_PREFERENCES_SHOW_WIND_SPEED, true)) showWindSpeed.setChecked(true);
+            if (mSettings.getBoolean(APP_PREFERENCES_SHOW_PRESSURE, true)) showPressure.setChecked(true);
+            spinner.setSelection(mSettings.getInt(CHOSEN_CITY_ID, 0));
         }
     }
 }
