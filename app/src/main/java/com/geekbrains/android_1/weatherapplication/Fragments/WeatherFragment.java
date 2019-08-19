@@ -1,19 +1,9 @@
 package com.geekbrains.android_1.weatherapplication.Fragments;
 
-
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
+import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.hardware.Sensor;
-import android.hardware.SensorManager;
 import android.os.Bundle;
-
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,12 +17,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.geekbrains.android_1.weatherapplication.Activities.BaseActivity;
 import com.geekbrains.android_1.weatherapplication.BuildConfig;
 import com.geekbrains.android_1.weatherapplication.R;
-import com.geekbrains.android_1.weatherapplication.Services.WeatherRequestService;
-import com.geekbrains.android_1.weatherapplication.WeatherData;
+import com.geekbrains.android_1.weatherapplication.rest.OpenWeatherRepo;
+import com.geekbrains.android_1.weatherapplication.rest.currentRest.entities.WeatherRequestRestModel;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -40,15 +31,13 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
-/**
- * A simple {@link Fragment} subclass.
- */
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class WeatherFragment extends Fragment {
 
     private static SharedPreferences mSettings;
-
-    public final static String BROADCAST_ACTION = "my_weather_application_2";
-    private ServiceFinishedReceiver receiver = new ServiceFinishedReceiver();
 
     private TextView city;
     private TextView date;
@@ -63,10 +52,6 @@ public class WeatherFragment extends Fragment {
     private ImageView weatherImage;
     private TextView weatherType;
 
-    private SensorManager sensorManager;
-    private Sensor sensorTemp;
-    private Sensor sensorHumidity;
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mSettings = PreferenceManager.getDefaultSharedPreferences(getContext());
@@ -77,11 +62,7 @@ public class WeatherFragment extends Fragment {
 
         settingsCheck();
 
-        String url = urlRequest(city.getText().toString());
-
-        setWeather(url);
-
-        getSensors();
+        setWeather(cityNameRequest(city.getText().toString()));
 
         date.setText(checkDate());
 
@@ -105,35 +86,6 @@ public class WeatherFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        sensorManager.unregisterListener(listenerTemp, sensorTemp);
-        sensorManager.unregisterListener(listenerHumidity, sensorHumidity);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Objects.requireNonNull(getActivity()).registerReceiver(receiver, new IntentFilter(BROADCAST_ACTION));
-        sensorManager.registerListener(listenerTemp, sensorTemp, SensorManager.SENSOR_DELAY_NORMAL);
-        sensorManager.registerListener(listenerHumidity, sensorHumidity, SensorManager.SENSOR_DELAY_NORMAL);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Objects.requireNonNull(getActivity()).unregisterReceiver(receiver);
-    }
-
-    private void settingsCheck(){
-        if (mSettings.getBoolean(BaseActivity.APP_PREFERENCES_SHOW_WIND_SPEED, true)) windSpeed.setVisibility(View.VISIBLE);
-        else windSpeed.setVisibility(View.INVISIBLE);
-        if (mSettings.getBoolean(BaseActivity.APP_PREFERENCES_SHOW_PRESSURE, true)) pressure.setVisibility(View.VISIBLE);
-        else pressure.setVisibility(View.INVISIBLE);
-        city.setText(mSettings.getString(BaseActivity.CHOSEN_CITY, ""));
-    }
-
     private void initUI(View layout){
         city = layout.findViewById(R.id.city);
         temperature = layout.findViewById(R.id.temperature);
@@ -149,119 +101,141 @@ public class WeatherFragment extends Fragment {
         weatherType = layout.findViewById(R.id.weather_type);
     }
 
-    private void setWeather (String url) {
-        Intent intent = new Intent(getActivity(), WeatherRequestService.class);
-        intent.putExtra("city_name", url);
-        Objects.requireNonNull(getActivity()).startService(intent);
+    private void settingsCheck(){
+        if (mSettings.getBoolean(BaseActivity.APP_PREFERENCES_SHOW_WIND_SPEED, true)) windSpeed.setVisibility(View.VISIBLE);
+        else windSpeed.setVisibility(View.INVISIBLE);
+        if (mSettings.getBoolean(BaseActivity.APP_PREFERENCES_SHOW_PRESSURE, true)) pressure.setVisibility(View.VISIBLE);
+        else pressure.setVisibility(View.INVISIBLE);
+        city.setText(mSettings.getString(BaseActivity.CHOSEN_CITY, ""));
+    }
+
+    private String cityNameRequest(String cityName){
+        String city = null;
+
+        switch (cityName) {
+            case "Moscow":
+            case "Москва":
+                city = "Moscow";
+                break;
+            case "Kaliningrad":
+            case "Калининград":
+                city = "Kaliningrad";
+                break;
+            case "Saint Petersburg":
+            case "Санкт-Петербург":
+                city = "Saint Petersburg";
+                break;
+            case "Novosibirsk":
+            case "Новосибирск":
+                city = "Novosibirsk";
+                break;
+            case "Krasnoyarsk":
+            case "Красноярск":
+                city = "Krasnoyarsk";
+                break;
+            case "Krasnodar":
+            case "Краснодар":
+                city = "Krasnodar";
+                break;
+            case "Arkhangelsk":
+            case "Архангельск":
+                city = "Arkhangelsk";
+                break;
+        }
+
+        return city;
+    }
+
+    private void setWeather (String cityName) {
+        OpenWeatherRepo.getSingleton().getCAPI().loadWeather(cityName + ",ru", BuildConfig.WEATHER_API_KEY)
+                .enqueue(new Callback<WeatherRequestRestModel>() {
+                    @Override
+                    public void onResponse(@NonNull Call<WeatherRequestRestModel> call,
+                                           @NonNull Response<WeatherRequestRestModel> response) {
+                        if (response.body() != null && response.isSuccessful()) {
+                            renderWeather(response.body());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<WeatherRequestRestModel> call, @NonNull Throwable t) {
+                        Toast.makeText(getContext(), getString(R.string.network_error),
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void renderWeather(WeatherRequestRestModel body) {
+        setTemp((body.main.temp - 273), (body.main.tempMax - 273), (body.main.tempMin - 273));
+        setWind(body.wind.speed);
+        setWeatherType(body.weather[0].main);
+        pressureValue.setText(String.valueOf(Math.round(body.main.pressure)));
+        humidityValue.setText(String.valueOf(Math.round(body.main.humidity)));
+    }
+
+    @SuppressLint({"DefaultLocale", "SetTextI18n"})
+    private void setTemp(float temp, float tempMax, float tempMin) {
+        if (BaseActivity.mSettings.getBoolean(BaseActivity.APP_PREFERENCES_TEMP_UNIT, true)){
+            temperature.setText(String.format("%.1f °C", temp));
+            willBe.setText(getResources().getString(R.string.day) + " " + String.format("%.1f °C", tempMax)
+                    + " | " + getResources().getString(R.string.night) + " " + String.format("%.1f °C", tempMin));
+        } else {
+            temperature.setText(String.format("%.1f °F", ((temp*1.8)+32)));
+            willBe.setText(getResources().getString(R.string.day) + " " + String.format("%.1f °F", (tempMax*1.8) + 32)
+                    + " | " + getResources().getString(R.string.night) + " " + String.format("%.1f °F", tempMin*1.8)+32);
+        }
+    }
+
+    @SuppressLint("DefaultLocale")
+    private void setWind(float speed) {
+        if (BaseActivity.mSettings.getBoolean(BaseActivity.APP_PREFERENCES_WIND_SPEED_UNIT, true)){
+            windSpeedValue.setText(String.format("%.0f", (Float)speed));
+            windSpeedUnits.setText(getResources().getString(R.string.wind_speed_count_1));
+        } else  {
+            windSpeedValue.setText(String.valueOf((int)(speed*3.6)));
+            windSpeedUnits.setText(getResources().getString(R.string.wind_speed_count_2));
+        }
+    }
+
+    private void setWeatherType(String main) {
+        String s = mSettings.getString(BaseActivity.CHOSEN_CITY, "");
+
+        switch (main) {
+            case "Clouds":
+                weatherImage.setImageResource(R.drawable.cloud);
+                weatherType.setText(getResources().getString(R.string.cloud));
+                if (!s.equals("")) {
+                    Objects.requireNonNull(getView()).setBackground(getResources().getDrawable(R.drawable.cloudy));
+                }
+                break;
+            case "Clear":
+                weatherImage.setImageResource(R.drawable.sun);
+                weatherType.setText(getResources().getString(R.string.clear));
+                if (!s.equals("")) {
+                    Objects.requireNonNull(getView()).setBackground(getResources().getDrawable(R.drawable.sunny));
+                }
+                break;
+            case "Rain":
+                weatherImage.setImageResource(R.drawable.rain);
+                weatherType.setText(getResources().getString(R.string.rain));
+                if (!s.equals("")) {
+                    Objects.requireNonNull(getView()).setBackground(getResources().getDrawable(R.drawable.rainy));
+                }
+                break;
+            case "Mist":
+            case "Fog":
+                weatherImage.setImageResource(R.drawable.mist);
+                weatherType.setText(getResources().getString(R.string.mist));
+                if (!s.equals("")) {
+                    Objects.requireNonNull(getView()).setBackground(getResources().getDrawable(R.drawable.misty));
+                }
+                break;
+        }
     }
 
     private String checkDate(){
         Date currentDate = new Date();
         DateFormat dateFormat = new SimpleDateFormat("EEE, dd MMMM", Locale.getDefault());
         return dateFormat.format(currentDate);
-    }
-
-    private void getSensors() {
-        sensorManager = (SensorManager) Objects.requireNonNull(getActivity()).getSystemService(Context.SENSOR_SERVICE);
-        if (sensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE) != null) {
-            sensorTemp = sensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE);
-        }
-        if (sensorManager.getDefaultSensor(Sensor.TYPE_RELATIVE_HUMIDITY) != null) {
-            sensorHumidity = sensorManager.getDefaultSensor(Sensor.TYPE_RELATIVE_HUMIDITY);
-        }
-    }
-
-    private void showTempSensors(SensorEvent event){
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(event.values[0]);
-//        temperature.setText(stringBuilder);
-    }
-
-    private void showHumiditySensors(SensorEvent event){
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(event.values[0]);
-//        humidityValue.setText(stringBuilder);
-    }
-
-    private SensorEventListener listenerTemp = new SensorEventListener() {
-
-        @Override
-        public void onAccuracyChanged(Sensor sensor, int accuracy) {}
-
-        @Override
-        public void onSensorChanged(SensorEvent event) {
-            showTempSensors(event);
-        }
-    };
-
-    private SensorEventListener listenerHumidity = new SensorEventListener() {
-
-        @Override
-        public void onAccuracyChanged(Sensor sensor, int accuracy) {}
-
-        @Override
-        public void onSensorChanged(SensorEvent event) {
-            showHumiditySensors(event);
-        }
-    };
-
-    private String urlRequest(String cityName){
-
-        String url = null;
-
-        switch (cityName) {
-            case "Moscow":
-            case "Москва":
-                url = WeatherData.MOSCOW_WEATHER_URL + BuildConfig.WEATHER_API_KEY;
-                break;
-            case "Kaliningrad":
-            case "Калининград":
-                url = WeatherData.Kaliningrad_WEATHER_URL + BuildConfig.WEATHER_API_KEY;
-                break;
-            case "Saint Petersburg":
-            case "Санкт-Петербург":
-                url = WeatherData.Saint_Petersburg_WEATHER_URL + BuildConfig.WEATHER_API_KEY;
-                break;
-            case "Novosibirsk":
-            case "Новосибирск":
-                url = WeatherData.Novosibirsk_WEATHER_URL + BuildConfig.WEATHER_API_KEY;
-                break;
-            case "Krasnoyarsk":
-            case "Красноярск":
-                url = WeatherData.Krasnoyarsk_WEATHER_URL + BuildConfig.WEATHER_API_KEY;
-                break;
-            case "Krasnodar":
-            case "Краснодар":
-                url = WeatherData.Krasnodar_WEATHER_URL + BuildConfig.WEATHER_API_KEY;
-                break;
-            case "Arkhangelsk":
-            case "Архангельск":
-                url = WeatherData.Arkhangelsk_WEATHER_URL + BuildConfig.WEATHER_API_KEY;
-                break;
-        }
-
-        return url;
-    }
-
-    private class ServiceFinishedReceiver extends BroadcastReceiver {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-
-            String s = mSettings.getString(BaseActivity.CHOSEN_CITY, "");
-
-            temperature.setText(intent.getStringExtra("temperature"));
-            willBe.setText(intent.getStringExtra("willBe"));
-            windSpeedValue.setText(intent.getStringExtra("windSpeedValue"));
-            windSpeedUnits.setText(intent.getStringExtra("windSpeedUnits"));
-            weatherType.setText(intent.getStringExtra("weatherType"));
-            pressureValue.setText(intent.getStringExtra("pressureValue"));
-            humidityValue.setText(intent.getStringExtra("humidityValue"));
-            weatherImage.setImageResource(intent.getIntExtra("weatherImage", 0));
-            assert s != null;
-            if (!s.equals("")) {
-                Objects.requireNonNull(getView()).setBackground(getResources().getDrawable(intent.getIntExtra("layout", 0)));
-            }
-        }
     }
 }

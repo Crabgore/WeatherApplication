@@ -27,7 +27,6 @@ public class WebViewFragment extends Fragment implements OnBackPressedListener {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         View layout = inflater.inflate(R.layout.fragment_web_view, container, false);
 
         webView = layout.findViewById(R.id.webView);

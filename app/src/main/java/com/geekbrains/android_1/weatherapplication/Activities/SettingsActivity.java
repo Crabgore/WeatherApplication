@@ -13,7 +13,7 @@ import android.widget.Spinner;
 
 import com.geekbrains.android_1.weatherapplication.R;
 
-public class Settings extends BaseActivity {
+public class SettingsActivity extends BaseActivity {
 
     private RadioGroup tempVal;
     private RadioGroup spdUnt;
@@ -45,28 +45,12 @@ public class Settings extends BaseActivity {
         });
     }
 
-    public void settings_accept(View view) {
+    public void settingsAccept(View view) {
         SharedPreferences.Editor editor = mSettings.edit();
-        if (((RadioButton)tempVal.getChildAt(0)).isChecked()){
-            editor.putBoolean(APP_PREFERENCES_TEMP_UNIT, true);
-        } else if (((RadioButton)tempVal.getChildAt(1)).isChecked()){
-            editor.putBoolean(APP_PREFERENCES_TEMP_UNIT, false);
-        }
-        if (((RadioButton)spdUnt.getChildAt(0)).isChecked()){
-            editor.putBoolean(APP_PREFERENCES_WIND_SPEED_UNIT, true);
-        } else if (((RadioButton)spdUnt.getChildAt(1)).isChecked()){
-            editor.putBoolean(APP_PREFERENCES_WIND_SPEED_UNIT, false);
-        }
-        if (showWindSpeed.isChecked()){
-            editor.putBoolean(APP_PREFERENCES_SHOW_WIND_SPEED, true);
-        } else {
-            editor.putBoolean(APP_PREFERENCES_SHOW_WIND_SPEED, false);
-        }
-        if (showPressure.isChecked()){
-            editor.putBoolean(APP_PREFERENCES_SHOW_PRESSURE, true);
-        } else {
-            editor.putBoolean(APP_PREFERENCES_SHOW_PRESSURE, false);
-        }
+        editor.putBoolean(APP_PREFERENCES_TEMP_UNIT, ((RadioButton)tempVal.getChildAt(0)).isChecked());
+        editor.putBoolean(APP_PREFERENCES_WIND_SPEED_UNIT, ((RadioButton)spdUnt.getChildAt(0)).isChecked());
+        editor.putBoolean(APP_PREFERENCES_SHOW_WIND_SPEED, showWindSpeed.isChecked());
+        editor.putBoolean(APP_PREFERENCES_SHOW_PRESSURE, showPressure.isChecked());
         editor.putString(CHOSEN_CITY, spinner.getSelectedItem().toString());
         editor.putInt(CHOSEN_CITY_ID, spinner.getSelectedItemPosition());
         editor.apply();

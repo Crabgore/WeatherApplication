@@ -41,6 +41,9 @@
     <string name="settings">Настройки</string>
     <string name="info">О городе</string>
     <string name="user_s_avatar">User\'s avatar</string>
+    <string name="network_error">Ошибка</string>
+    <string name="insert_message">Введите сообщение</string>
+    <string name="sent">Отправлено</string>
 
     <string-array name="cities">
         <item>Калининград</item>
@@ -59,8 +62,5 @@
         <item>через три дня</item>
         <item>через четыре дня</item>
     </string-array>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

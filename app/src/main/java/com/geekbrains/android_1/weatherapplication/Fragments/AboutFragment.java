@@ -15,9 +15,6 @@ import com.geekbrains.android_1.weatherapplication.R;
 
 import java.util.Objects;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class AboutFragment extends Fragment {
 
     @Override

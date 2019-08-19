@@ -17,10 +17,6 @@ import com.google.android.material.button.MaterialButton;
 
 import java.util.Objects;
 
-
-/**
- * A simple {@link Fragment} subclass.
- */
 public class ShareFragment extends Fragment {
 
     private EditText msg;
@@ -40,10 +36,10 @@ public class ShareFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (msg.getText().toString().equals("")){
-                    Toast.makeText(getContext(), "Введите сообщение", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getResources().getString(R.string.insert_message), Toast.LENGTH_SHORT).show();
                 } else {
                     msg.getText().clear();
-                    Toast.makeText(getContext(), "Отправлено", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getResources().getString(R.string.sent), Toast.LENGTH_SHORT).show();
                 }
             }
         });

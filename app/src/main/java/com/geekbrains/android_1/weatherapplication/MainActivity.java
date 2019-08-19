@@ -2,11 +2,10 @@ package com.geekbrains.android_1.weatherapplication;
 
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.net.Uri;
 import android.os.Bundle;
 
 import com.geekbrains.android_1.weatherapplication.Activities.BaseActivity;
-import com.geekbrains.android_1.weatherapplication.Activities.Settings;
+import com.geekbrains.android_1.weatherapplication.Activities.SettingsActivity;
 import com.geekbrains.android_1.weatherapplication.Fragments.AboutFragment;
 import com.geekbrains.android_1.weatherapplication.Fragments.FutureFragment;
 import com.geekbrains.android_1.weatherapplication.Fragments.ShareFragment;
@@ -59,7 +58,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
@@ -67,7 +66,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Intent intent = new Intent(MainActivity.this, Settings.class);
+            Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
             startActivityForResult(intent, SETTINGS);
         }
         if (id == R.id.action_info){
@@ -116,9 +115,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         String s = mSettings.getString(CHOSEN_CITY, "");
 
-        assert s != null;
         if (s.equals("")){
-            Intent intent = new Intent(MainActivity.this, Settings.class);
+            Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
 
             startActivityForResult(intent, SETTINGS);
         }

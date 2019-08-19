@@ -1,9 +1,6 @@
 package com.geekbrains.android_1.weatherapplication.Fragments;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
+import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -17,24 +14,27 @@ import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.geekbrains.android_1.weatherapplication.Activities.BaseActivity;
 import com.geekbrains.android_1.weatherapplication.Adapters.FutureAdapter;
 import com.geekbrains.android_1.weatherapplication.BuildConfig;
 import com.geekbrains.android_1.weatherapplication.ExampleItem;
 import com.geekbrains.android_1.weatherapplication.R;
-import com.geekbrains.android_1.weatherapplication.Services.FutureWeatherRequestService;
-import com.geekbrains.android_1.weatherapplication.WeatherData;
+import com.geekbrains.android_1.weatherapplication.rest.OpenWeatherRepo;
+import com.geekbrains.android_1.weatherapplication.rest.forecastRest.entities.ListRestModel;
+import com.geekbrains.android_1.weatherapplication.rest.forecastRest.entities.WeatherForecastRequestRestModel;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class FutureFragment extends Fragment {
 
     private FutureAdapter futureAdapter;
-
-    public final static String FUTURE_BROADCAST_ACTION = "my_future_weather_application_2";
-    private ServiceFinishedReceiver receiver = new ServiceFinishedReceiver();
 
     private ArrayList<ExampleItem> mExampleList;
 
@@ -47,7 +47,8 @@ public class FutureFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
 
         SharedPreferences mSettings = PreferenceManager.getDefaultSharedPreferences(getContext());
 
@@ -55,29 +56,13 @@ public class FutureFragment extends Fragment {
 
         createBackground(layout);
 
-        String url = urlRequest(Objects.requireNonNull(mSettings.getString(BaseActivity.CHOSEN_CITY, "")));
-
-        setWeather(url);
+        setWeather(cityNameRequest(Objects.requireNonNull(mSettings.getString(BaseActivity.CHOSEN_CITY, ""))));
 
         createExampleList();
 
         initRecyclerView(mExampleList, layout);
 
-        Objects.requireNonNull(getActivity()).registerReceiver(receiver, new IntentFilter(FUTURE_BROADCAST_ACTION));
-
         return layout;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Objects.requireNonNull(getActivity()).registerReceiver(receiver, new IntentFilter(FUTURE_BROADCAST_ACTION));
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Objects.requireNonNull(getActivity()).unregisterReceiver(receiver);
     }
 
     private void createBackground(View layout) {
@@ -85,10 +70,102 @@ public class FutureFragment extends Fragment {
         layout.setBackgroundColor(back);
     }
 
-    private void setWeather(String url){
-        Intent intent = new Intent(getActivity(), FutureWeatherRequestService.class);
-        intent.putExtra("city_name", url);
-        Objects.requireNonNull(getActivity()).startService(intent);
+    private String cityNameRequest(String cityName){
+        String city = null;
+
+        switch (cityName) {
+            case "Moscow":
+            case "Москва":
+                city = "Moscow";
+                break;
+            case "Kaliningrad":
+            case "Калининград":
+                city = "Kaliningrad";
+                break;
+            case "Saint Petersburg":
+            case "Санкт-Петербург":
+                city = "Saint Petersburg";
+                break;
+            case "Novosibirsk":
+            case "Новосибирск":
+                city = "Novosibirsk";
+                break;
+            case "Krasnoyarsk":
+            case "Красноярск":
+                city = "Krasnoyarsk";
+                break;
+            case "Krasnodar":
+            case "Краснодар":
+                city = "Krasnodar";
+                break;
+            case "Arkhangelsk":
+            case "Архангельск":
+                city = "Arkhangelsk";
+                break;
+        }
+
+        return city;
+    }
+
+    private void setWeather(String cityName){
+        OpenWeatherRepo.getSingleton().getFAPI().loadWeather(cityName + ",ru",
+                BuildConfig.WEATHER_API_KEY)
+                .enqueue(new Callback<WeatherForecastRequestRestModel>() {
+                    @Override
+                    public void onResponse(@NonNull Call<WeatherForecastRequestRestModel> call,
+                                           @NonNull Response<WeatherForecastRequestRestModel> response) {
+                        if (response.body() != null && response.isSuccessful()) {
+                            renderWeather(response.body());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<WeatherForecastRequestRestModel> call,
+                                          @NonNull Throwable t) {
+                        Toast.makeText(getContext(), getString(R.string.network_error),
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void renderWeather(WeatherForecastRequestRestModel body) {
+        String[] data = getResources().getStringArray(R.array.days);
+        String[] dayNight = setDayNight(body.list);
+        String[] weatherType = setWeatherType(body.list);
+
+        mExampleList.clear();
+
+        for (int i = 0; i < 5; i++) {
+            mExampleList.add(new ExampleItem(data[i], dayNight[i], weatherType[i]));
+
+        }
+
+        futureAdapter.notifyDataSetChanged();
+    }
+
+    @SuppressLint("DefaultLocale")
+    private String[] setDayNight(ListRestModel[] list) {
+        String[] dayNight = new String[5];
+        if (BaseActivity.mSettings.getBoolean(BaseActivity.APP_PREFERENCES_TEMP_UNIT, true)){
+            for (int i = 0; i < 5; i++) {
+                dayNight[i] = String.format("%.0f °C", list[i].main.tempMax - 273) + " | "
+                        + String.format("%.0f °C", list[i].main.tempMin - 273);
+            }
+        } else {
+            for (int i = 0; i < 5; i++) {
+                dayNight[i] = String.format("%.0f °F", ((list[i].main.tempMax - 273)*1.8) + 32)
+                        + " | " + String.format("%.0f °F", ((list[i].main.tempMin - 273)*1.8) + 32);
+            }
+        }
+        return dayNight;
+    }
+
+    private String[] setWeatherType(ListRestModel[] list) {
+        String[] weatherType = new String[5];
+        for (int i = 0; i < 5; i++) {
+            weatherType[i] = list[i].weather[0].main;
+        }
+        return weatherType;
     }
 
     private void createExampleList(){
@@ -105,68 +182,9 @@ public class FutureFragment extends Fragment {
         futureAdapter = new FutureAdapter(mExampleList);
         recyclerView.setAdapter(futureAdapter);
 
-        DividerItemDecoration itemDecoration = new DividerItemDecoration(layout.getContext(), LinearLayoutManager.VERTICAL);
+        DividerItemDecoration itemDecoration = new DividerItemDecoration(layout.getContext(),
+                LinearLayoutManager.VERTICAL);
         itemDecoration.setDrawable(getResources().getDrawable(R.drawable.separator));
         recyclerView.addItemDecoration(itemDecoration);
-    }
-
-    private String urlRequest(String cityName){
-
-        String url = null;
-
-        switch (cityName) {
-            case "Moscow":
-            case "Москва":
-                url = WeatherData.FUTURE_MOSCOW_WEATHER_URL + BuildConfig.WEATHER_API_KEY;
-                break;
-            case "Kaliningrad":
-            case "Калининград":
-                url = WeatherData.FUTURE_Kaliningrad_WEATHER_URL + BuildConfig.WEATHER_API_KEY;
-                break;
-            case "Saint Petersburg":
-            case "Санкт-Петербург":
-                url = WeatherData.FUTURE_Saint_Petersburg_WEATHER_URL + BuildConfig.WEATHER_API_KEY;
-                break;
-            case "Novosibirsk":
-            case "Новосибирск":
-                url = WeatherData.FUTURE_Novosibirsk_WEATHER_URL + BuildConfig.WEATHER_API_KEY;
-                break;
-            case "Krasnoyarsk":
-            case "Красноярск":
-                url = WeatherData.FUTURE_Krasnoyarsk_WEATHER_URL + BuildConfig.WEATHER_API_KEY;
-                break;
-            case "Krasnodar":
-            case "Краснодар":
-                url = WeatherData.FUTURE_Krasnodar_WEATHER_URL + BuildConfig.WEATHER_API_KEY;
-                break;
-            case "Arkhangelsk":
-            case "Архангельск":
-                url = WeatherData.FUTURE_Arkhangelsk_WEATHER_URL + BuildConfig.WEATHER_API_KEY;
-                break;
-        }
-
-        return url;
-    }
-
-    private class ServiceFinishedReceiver extends BroadcastReceiver {
-        String[] data;
-        String[] dayNight;
-        String[] weatherType;
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            data = getResources().getStringArray(R.array.days);
-            dayNight = intent.getStringArrayExtra("dayNight");
-            weatherType = intent.getStringArrayExtra("weatherType");
-
-            mExampleList.clear();
-
-            for (int i = 0; i < 5; i++) {
-                mExampleList.add(new ExampleItem(data[i], dayNight[i], weatherType[i]));
-
-            }
-
-            futureAdapter.notifyDataSetChanged();
-        }
     }
 }
