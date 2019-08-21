@@ -45,16 +45,11 @@
     <string name="network_error">Error</string>
     <string name="insert_message">Insert message</string>
     <string name="sent">Message sent</string>
-
-    <string-array name="cities">
-        <item>Kaliningrad</item>
-        <item>Moscow</item>
-        <item>Saint Petersburg</item>
-        <item>Novosibirsk</item>
-        <item>Krasnoyarsk</item>
-        <item>Krasnodar</item>
-        <item>Arkhangelsk</item>
-    </string-array>
+    <string name="delete">Delete</string>
+    <string name="insertCity">Insert city</string>
+    <string name="add">Add</string>
+    <string name="no_city">Insert and choose city</string>
+    <string name="no_such_city">City not found</string>
 
     <string-array name="days">
         <item>Tomorrow</item>

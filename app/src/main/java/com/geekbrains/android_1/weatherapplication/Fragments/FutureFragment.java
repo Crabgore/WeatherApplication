@@ -56,7 +56,7 @@ public class FutureFragment extends Fragment {
 
         createBackground(layout);
 
-        setWeather(cityNameRequest(Objects.requireNonNull(mSettings.getString(BaseActivity.CHOSEN_CITY, ""))));
+        setWeather(mSettings.getString(BaseActivity.CHOSEN_CITY, ""));
 
         createExampleList();
 
@@ -68,43 +68,6 @@ public class FutureFragment extends Fragment {
     private void createBackground(View layout) {
         int back = Objects.requireNonNull(getActivity()).getWindow().getStatusBarColor();
         layout.setBackgroundColor(back);
-    }
-
-    private String cityNameRequest(String cityName){
-        String city = null;
-
-        switch (cityName) {
-            case "Moscow":
-            case "Москва":
-                city = "Moscow";
-                break;
-            case "Kaliningrad":
-            case "Калининград":
-                city = "Kaliningrad";
-                break;
-            case "Saint Petersburg":
-            case "Санкт-Петербург":
-                city = "Saint Petersburg";
-                break;
-            case "Novosibirsk":
-            case "Новосибирск":
-                city = "Novosibirsk";
-                break;
-            case "Krasnoyarsk":
-            case "Красноярск":
-                city = "Krasnoyarsk";
-                break;
-            case "Krasnodar":
-            case "Краснодар":
-                city = "Krasnodar";
-                break;
-            case "Arkhangelsk":
-            case "Архангельск":
-                city = "Arkhangelsk";
-                break;
-        }
-
-        return city;
     }
 
     private void setWeather(String cityName){

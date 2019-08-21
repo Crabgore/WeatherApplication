@@ -41,7 +41,7 @@ public class OpenWeatherRepo {
 
     private Retrofit buildAdapter() {
         return new Retrofit.Builder()
-                .baseUrl("http://api.openweathermap.org/")
+                .baseUrl("https://api.openweathermap.org/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
     }

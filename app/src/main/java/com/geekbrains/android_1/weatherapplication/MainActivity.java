@@ -2,6 +2,7 @@ package com.geekbrains.android_1.weatherapplication;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import com.geekbrains.android_1.weatherapplication.Activities.BaseActivity;
@@ -10,6 +11,7 @@ import com.geekbrains.android_1.weatherapplication.Fragments.AboutFragment;
 import com.geekbrains.android_1.weatherapplication.Fragments.FutureFragment;
 import com.geekbrains.android_1.weatherapplication.Fragments.ShareFragment;
 import com.geekbrains.android_1.weatherapplication.Fragments.WebViewFragment;
+import com.geekbrains.android_1.weatherapplication.database.DatabaseHelper;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
@@ -28,6 +30,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     private static final int SETTINGS = 1;
 
+    public static SQLiteDatabase database;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,9 +39,15 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        initDB();
+
         initSideMenu(toolbar);
 
         settingsCheck();
+    }
+
+    private void initDB() {
+        database = new DatabaseHelper(getApplicationContext()).getWritableDatabase();
     }
 
     private void initSideMenu(Toolbar toolbar) {
@@ -52,19 +62,14 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
             startActivityForResult(intent, SETTINGS);
@@ -72,12 +77,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         if (id == R.id.action_info){
             WebViewFragment details = new WebViewFragment();
             navBarMenu(details);
-
-
-//            String url = "https://ru.wikipedia.org/wiki/" + mSettings.getString(CHOSEN_CITY, "");
-//            Uri uri = Uri.parse(url);
-//            Intent browser = new Intent(Intent.ACTION_VIEW, uri);
-//            startActivity(browser);
         }
 
         return super.onOptionsItemSelected(item);
@@ -85,7 +84,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
 
         if (id == R.id.nav_future) {

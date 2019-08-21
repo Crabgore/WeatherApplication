@@ -44,16 +44,11 @@
     <string name="network_error">Ошибка</string>
     <string name="insert_message">Введите сообщение</string>
     <string name="sent">Отправлено</string>
-
-    <string-array name="cities">
-        <item>Калининград</item>
-        <item>Москва</item>
-        <item>Санкт-Петербург</item>
-        <item>Новосибирск</item>
-        <item>Красноярск</item>
-        <item>Краснодар</item>
-        <item>Архангельск</item>
-    </string-array>
+    <string name="delete">Удалить</string>
+    <string name="insertCity">Введите город</string>
+    <string name="add">Добавить</string>
+    <string name="no_city">Введите и выберите город</string>
+    <string name="no_such_city">Город не найден</string>
 
     <string-array name="days">
         <item>Завтра</item>

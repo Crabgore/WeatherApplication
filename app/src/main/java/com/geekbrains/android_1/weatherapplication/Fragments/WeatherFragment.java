@@ -21,7 +21,9 @@ import android.widget.Toast;
 
 import com.geekbrains.android_1.weatherapplication.Activities.BaseActivity;
 import com.geekbrains.android_1.weatherapplication.BuildConfig;
+import com.geekbrains.android_1.weatherapplication.MainActivity;
 import com.geekbrains.android_1.weatherapplication.R;
+import com.geekbrains.android_1.weatherapplication.database.CitiesTable;
 import com.geekbrains.android_1.weatherapplication.rest.OpenWeatherRepo;
 import com.geekbrains.android_1.weatherapplication.rest.currentRest.entities.WeatherRequestRestModel;
 
@@ -62,7 +64,7 @@ public class WeatherFragment extends Fragment {
 
         settingsCheck();
 
-        setWeather(cityNameRequest(city.getText().toString()));
+        setWeather(city.getText().toString());
 
         date.setText(checkDate());
 
@@ -109,43 +111,6 @@ public class WeatherFragment extends Fragment {
         city.setText(mSettings.getString(BaseActivity.CHOSEN_CITY, ""));
     }
 
-    private String cityNameRequest(String cityName){
-        String city = null;
-
-        switch (cityName) {
-            case "Moscow":
-            case "Москва":
-                city = "Moscow";
-                break;
-            case "Kaliningrad":
-            case "Калининград":
-                city = "Kaliningrad";
-                break;
-            case "Saint Petersburg":
-            case "Санкт-Петербург":
-                city = "Saint Petersburg";
-                break;
-            case "Novosibirsk":
-            case "Новосибирск":
-                city = "Novosibirsk";
-                break;
-            case "Krasnoyarsk":
-            case "Красноярск":
-                city = "Krasnoyarsk";
-                break;
-            case "Krasnodar":
-            case "Краснодар":
-                city = "Krasnodar";
-                break;
-            case "Arkhangelsk":
-            case "Архангельск":
-                city = "Arkhangelsk";
-                break;
-        }
-
-        return city;
-    }
-
     private void setWeather (String cityName) {
         OpenWeatherRepo.getSingleton().getCAPI().loadWeather(cityName + ",ru", BuildConfig.WEATHER_API_KEY)
                 .enqueue(new Callback<WeatherRequestRestModel>() {
@@ -171,6 +136,11 @@ public class WeatherFragment extends Fragment {
         setWeatherType(body.weather[0].main);
         pressureValue.setText(String.valueOf(Math.round(body.main.pressure)));
         humidityValue.setText(String.valueOf(Math.round(body.main.humidity)));
+        if (!city.getText().toString().equals("")) {
+            CitiesTable.editCityWeather(city.getText().toString(), String.valueOf(body.main.temp - 273),
+                    weatherType.getText().toString(), windSpeedValue.getText().toString(),
+                    pressureValue.getText().toString(), humidityValue.getText().toString(), MainActivity.database);
+        }
     }
 
     @SuppressLint({"DefaultLocale", "SetTextI18n"})

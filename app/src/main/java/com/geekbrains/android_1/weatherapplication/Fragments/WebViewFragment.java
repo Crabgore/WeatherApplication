@@ -29,13 +29,15 @@ public class WebViewFragment extends Fragment implements OnBackPressedListener {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_web_view, container, false);
 
-        webView = layout.findViewById(R.id.webView);
-
-        webView.setWebViewClient(new MyWebViewClient());
-
-        webView.loadUrl("https://ru.wikipedia.org/wiki/" + BaseActivity.mSettings.getString(BaseActivity.CHOSEN_CITY, ""));
+        initUI(layout);
 
         return layout;
+    }
+
+    private void initUI(View layout) {
+        webView = layout.findViewById(R.id.webView);
+        webView.setWebViewClient(new MyWebViewClient());
+        webView.loadUrl("https://en.wikipedia.org/wiki/" + BaseActivity.mSettings.getString(BaseActivity.CHOSEN_CITY, ""));
     }
 
     @Override
