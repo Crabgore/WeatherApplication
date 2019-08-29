@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".MainActivity"
-    android:background="@drawable/background"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
         <TextView
@@ -15,11 +15,10 @@
             android:textSize="35sp"
             android:textStyle="bold"
             android:textColor="@android:color/white"
-            android:layout_marginTop="55dp"
             android:shadowColor="@android:color/black"
-            android:shadowRadius="2"
-            android:shadowDx="2"
-            android:shadowDy="2"
+            android:shadowRadius="3"
+            android:shadowDx="3"
+            android:shadowDy="3"
             app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
@@ -30,9 +29,9 @@
             android:textAlignment="center"
             android:textColor="@android:color/white"
             android:shadowColor="@android:color/black"
-            android:shadowRadius="2"
-            android:shadowDx="2"
-            android:shadowDy="2"
+            android:shadowRadius="3"
+            android:shadowDx="3"
+            android:shadowDy="3"
             app:layout_constraintTop_toBottomOf="@id/city"/>
 
             <LinearLayout
@@ -50,9 +49,9 @@
                     android:textAlignment="center"
                     android:textColor="@android:color/white"
                     android:shadowColor="@android:color/black"
-                    android:shadowRadius="2"
-                    android:shadowDx="2"
-                    android:shadowDy="2"/>
+                    android:shadowRadius="3"
+                    android:shadowDx="3"
+                    android:shadowDy="3"/>
 
                 <TextView
                     android:id="@+id/temperature"
@@ -63,22 +62,10 @@
                     android:textColor="@android:color/white"
                     android:textAlignment="center"
                     android:shadowColor="@android:color/black"
-                    android:shadowRadius="2"
-                    android:shadowDx="2"
-                    android:shadowDy="2"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/feel_temp"
-                    android:textColor="@android:color/white"
-                    android:textAlignment="center"
-                    android:shadowColor="@android:color/black"
-                    android:shadowRadius="2"
-                    android:shadowDx="2"
-                    android:shadowDy="2"/>
+                    android:shadowRadius="3"
+                    android:shadowDx="3"
+                    android:shadowDy="3"/>
             </LinearLayout>
-
 
             <LinearLayout
                 android:id="@+id/layout2"
@@ -90,7 +77,8 @@
                 <ImageView
                     android:id="@+id/weather_image"
                     android:layout_width="match_parent"
-                    android:layout_height="80dp" />
+                    android:layout_height="80dp"
+                    android:contentDescription="@string/weather_visual" />
 
                 <TextView
                     android:id="@+id/weather_type"
@@ -99,9 +87,9 @@
                     android:textColor="@android:color/white"
                     android:textAlignment="center"
                     android:shadowColor="@android:color/black"
-                    android:shadowRadius="2"
-                    android:shadowDx="2"
-                    android:shadowDy="2"/>
+                    android:shadowRadius="3"
+                    android:shadowDx="3"
+                    android:shadowDy="3"/>
             </LinearLayout>
 
 
@@ -117,13 +105,13 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Скорость ветра:"
+                android:text="@string/windSpeed"
                 android:textColor="@android:color/white"
                 android:textAlignment="center"
                 android:shadowColor="@android:color/black"
-                android:shadowRadius="2"
-                android:shadowDx="2"
-                android:shadowDy="2"
+                android:shadowRadius="3"
+                android:shadowDx="3"
+                android:shadowDy="3"
                 android:textStyle="bold"/>
 
             <TextView
@@ -133,9 +121,9 @@
                 android:textColor="@android:color/white"
                 android:textAlignment="center"
                 android:shadowColor="@android:color/black"
-                android:shadowRadius="2"
-                android:shadowDx="2"
-                android:shadowDy="2"/>
+                android:shadowRadius="3"
+                android:shadowDx="3"
+                android:shadowDy="3"/>
 
             <TextView
                 android:id="@+id/windSpeed_units"
@@ -144,9 +132,9 @@
                 android:textColor="@android:color/white"
                 android:textAlignment="center"
                 android:shadowColor="@android:color/black"
-                android:shadowRadius="2"
-                android:shadowDx="2"
-                android:shadowDy="2"/>
+                android:shadowRadius="3"
+                android:shadowDx="3"
+                android:shadowDy="3"/>
 
         </LinearLayout>
 
@@ -161,13 +149,13 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Давление:"
+                android:text="@string/pressureWeather"
                 android:textColor="@android:color/white"
                 android:textAlignment="center"
                 android:shadowColor="@android:color/black"
-                android:shadowRadius="2"
-                android:shadowDx="2"
-                android:shadowDy="2"
+                android:shadowRadius="3"
+                android:shadowDx="3"
+                android:shadowDy="3"
                 android:textStyle="bold"/>
 
             <TextView
@@ -177,20 +165,20 @@
                 android:textColor="@android:color/white"
                 android:textAlignment="center"
                 android:shadowColor="@android:color/black"
-                android:shadowRadius="2"
-                android:shadowDx="2"
-                android:shadowDy="2"/>
+                android:shadowRadius="3"
+                android:shadowDx="3"
+                android:shadowDy="3"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="мм рт.ст."
+                android:text="@string/pressure_units"
                 android:textColor="@android:color/white"
                 android:textAlignment="center"
                 android:shadowColor="@android:color/black"
-                android:shadowRadius="2"
-                android:shadowDx="2"
-                android:shadowDy="2"/>
+                android:shadowRadius="3"
+                android:shadowDx="3"
+                android:shadowDy="3"/>
     </LinearLayout>
 
     <LinearLayout
@@ -204,13 +192,13 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Влажность:"
+            android:text="@string/humidity"
             android:textColor="@android:color/white"
             android:textAlignment="center"
             android:shadowColor="@android:color/black"
-            android:shadowRadius="2"
-            android:shadowDx="2"
-            android:shadowDy="2"
+            android:shadowRadius="3"
+            android:shadowDx="3"
+            android:shadowDy="3"
             android:textStyle="bold"/>
 
         <TextView
@@ -220,28 +208,19 @@
             android:textColor="@android:color/white"
             android:textAlignment="center"
             android:shadowColor="@android:color/black"
-            android:shadowRadius="2"
-            android:shadowDx="2"
-            android:shadowDy="2"/>
+            android:shadowRadius="3"
+            android:shadowDx="3"
+            android:shadowDy="3"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="%"
+            android:text="@string/humidity_units"
             android:textColor="@android:color/white"
             android:textAlignment="center"
             android:shadowColor="@android:color/black"
-            android:shadowRadius="2"
-            android:shadowDx="2"
-            android:shadowDy="2"/>
+            android:shadowRadius="3"
+            android:shadowDx="3"
+            android:shadowDy="3"/>
     </LinearLayout>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/info"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/info"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="5dp"
-                app:layout_constraintBottom_toBottomOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>

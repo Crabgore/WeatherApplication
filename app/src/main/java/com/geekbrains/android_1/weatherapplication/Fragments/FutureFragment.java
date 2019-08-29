@@ -1,48 +1,42 @@
 package com.geekbrains.android_1.weatherapplication.Fragments;
 
-
 import android.annotation.SuppressLint;
-import android.os.Build;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.geekbrains.android_1.weatherapplication.Activities.BaseActivity;
 import com.geekbrains.android_1.weatherapplication.Adapters.FutureAdapter;
-import com.geekbrains.android_1.weatherapplication.Model.Future.FutureWeatherRequest;
+import com.geekbrains.android_1.weatherapplication.BuildConfig;
+import com.geekbrains.android_1.weatherapplication.ExampleItem;
 import com.geekbrains.android_1.weatherapplication.R;
-import com.geekbrains.android_1.weatherapplication.WeatherData;
-import com.google.gson.Gson;
+import com.geekbrains.android_1.weatherapplication.rest.OpenWeatherRepo;
+import com.geekbrains.android_1.weatherapplication.rest.forecastRest.entities.ListRestModel;
+import com.geekbrains.android_1.weatherapplication.rest.forecastRest.entities.WeatherForecastRequestRestModel;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.stream.Collectors;
+import java.util.Objects;
 
-import javax.net.ssl.HttpsURLConnection;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-
-/**
- * A simple {@link Fragment} subclass.
- */
 public class FutureFragment extends Fragment {
 
-    private ArrayList<String> dayNight = new ArrayList<>();
-    private ArrayList<String> weatherType = new ArrayList<>();
+    private FutureAdapter futureAdapter;
+
+    private ArrayList<ExampleItem> mExampleList;
 
     static FutureFragment create(){
         FutureFragment f = new FutureFragment();
@@ -52,105 +46,108 @@ public class FutureFragment extends Fragment {
         return f;
     }
 
-
-    public FutureFragment() {
-        // Required empty public constructor
-    }
-
-
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
 
-        String[] data = getResources().getStringArray(R.array.days);
+        SharedPreferences mSettings = PreferenceManager.getDefaultSharedPreferences(getContext());
 
         View layout = inflater.inflate(R.layout.fragment_future, container, false);
 
-        SetWeather(BaseActivity.mSettings.getString(BaseActivity.CHOSEN_CITY, ""));
+        createBackground(layout);
 
-        initRecyclerView(data, dayNight, weatherType, layout);
+        setWeather(mSettings.getString(BaseActivity.CHOSEN_CITY, ""));
+
+        createExampleList();
+
+        initRecyclerView(mExampleList, layout);
 
         return layout;
     }
 
-    private void initRecyclerView(String[] data, ArrayList dayNight, ArrayList weatherType, View layout){
+    private void createBackground(View layout) {
+        int back = Objects.requireNonNull(getActivity()).getWindow().getStatusBarColor();
+        layout.setBackgroundColor(back);
+    }
+
+    private void setWeather(String cityName){
+        OpenWeatherRepo.getSingleton().getFAPI().loadWeather(cityName,
+                BuildConfig.WEATHER_API_KEY)
+                .enqueue(new Callback<WeatherForecastRequestRestModel>() {
+                    @Override
+                    public void onResponse(@NonNull Call<WeatherForecastRequestRestModel> call,
+                                           @NonNull Response<WeatherForecastRequestRestModel> response) {
+                        if (response.body() != null && response.isSuccessful()) {
+                            renderWeather(response.body());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<WeatherForecastRequestRestModel> call,
+                                          @NonNull Throwable t) {
+                        Toast.makeText(getContext(), getString(R.string.network_error),
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void renderWeather(WeatherForecastRequestRestModel body) {
+        String[] data = getResources().getStringArray(R.array.days);
+        String[] dayNight = setDayNight(body.list);
+        String[] weatherType = setWeatherType(body.list);
+
+        mExampleList.clear();
+
+        for (int i = 0; i < 5; i++) {
+            mExampleList.add(new ExampleItem(data[i], dayNight[i], weatherType[i]));
+
+        }
+
+        futureAdapter.notifyDataSetChanged();
+    }
+
+    @SuppressLint("DefaultLocale")
+    private String[] setDayNight(ListRestModel[] list) {
+        String[] dayNight = new String[5];
+        if (BaseActivity.mSettings.getBoolean(BaseActivity.APP_PREFERENCES_TEMP_UNIT, true)){
+            for (int i = 0; i < 5; i++) {
+                dayNight[i] = String.format("%.0f °C", list[i].main.tempMax - 273) + " | "
+                        + String.format("%.0f °C", list[i].main.tempMin - 273);
+            }
+        } else {
+            for (int i = 0; i < 5; i++) {
+                dayNight[i] = String.format("%.0f °F", ((list[i].main.tempMax - 273)*1.8) + 32)
+                        + " | " + String.format("%.0f °F", ((list[i].main.tempMin - 273)*1.8) + 32);
+            }
+        }
+        return dayNight;
+    }
+
+    private String[] setWeatherType(ListRestModel[] list) {
+        String[] weatherType = new String[5];
+        for (int i = 0; i < 5; i++) {
+            weatherType[i] = list[i].weather[0].main;
+        }
+        return weatherType;
+    }
+
+    private void createExampleList(){
+        mExampleList = new ArrayList<>();
+    }
+
+    private void initRecyclerView(ArrayList<ExampleItem> mExampleList, View layout){
         RecyclerView recyclerView = layout.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        FutureAdapter futureAdapter = new FutureAdapter(data, dayNight, weatherType);
+        futureAdapter = new FutureAdapter(mExampleList);
         recyclerView.setAdapter(futureAdapter);
 
-        DividerItemDecoration itemDecoration = new DividerItemDecoration(layout.getContext(), LinearLayoutManager.VERTICAL);
+        DividerItemDecoration itemDecoration = new DividerItemDecoration(layout.getContext(),
+                LinearLayoutManager.VERTICAL);
         itemDecoration.setDrawable(getResources().getDrawable(R.drawable.separator));
         recyclerView.addItemDecoration(itemDecoration);
-    }
-
-    private void SetWeather(String cityName){
-
-        String url = null;
-
-        if (cityName.equals("Moscow") || cityName.equals("Москва")) url = WeatherData.FUTURE_MOSCOW_WEATHER_URL;
-        if (cityName.equals("Kaliningrad") || cityName.equals("Калининград")) url = WeatherData.FUTURE_Kaliningrad_WEATHER_URL;
-        if (cityName.equals("Saint Petersburg") || cityName.equals("Санкт-Петербург")) url = WeatherData.FUTURE_Saint_Petersburg_WEATHER_URL;
-        if (cityName.equals("Novosibirsk") || cityName.equals("Новосибирск")) url = WeatherData.FUTURE_Novosibirsk_WEATHER_URL;
-        if (cityName.equals("Krasnoyarsk") || cityName.equals("Красноярск")) url = WeatherData.FUTURE_Krasnoyarsk_WEATHER_URL;
-        if (cityName.equals("Tver") || cityName.equals("Тверь")) url = WeatherData.FUTURE_Tver_WEATHER_URL;
-        if (cityName.equals("Omsk") || cityName.equals("Омск")) url = WeatherData.FUTURE_Omsk_WEATHER_URL;
-        if (cityName.equals("Krasnodar") || cityName.equals("Краснодар")) url = WeatherData.FUTURE_Krasnodar_WEATHER_URL;
-        if (cityName.equals("Arkhangelsk") || cityName.equals("Архангельск")) url = WeatherData.FUTURE_Arkhangelsk_WEATHER_URL;
-
-        try {
-            final URL uri = new URL(url);
-            final Handler handler = new Handler();
-            new Thread(new Runnable() {
-                @RequiresApi(api = Build.VERSION_CODES.N)
-                @Override
-                public void run() {
-                    try {
-                        HttpsURLConnection urlConnection;
-                        urlConnection = (HttpsURLConnection) uri.openConnection();
-                        urlConnection.setRequestMethod("GET");
-                        urlConnection.setReadTimeout(10000);
-                        BufferedReader in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-                        final String result = in.lines().collect(Collectors.joining("\n"));
-                        Gson gson = new Gson();
-                        final FutureWeatherRequest futureWeatherRequest = gson.fromJson(result, FutureWeatherRequest.class);
-
-                        handler.post(new Runnable() {
-                            @SuppressLint({"DefaultLocale"})
-                            @Override
-                            public void run() {
-                                if (BaseActivity.mSettings.getBoolean(BaseActivity.APP_PREFERENCES_TEMP_UNIT, true)){
-                                    dayNight.add(String.format("%.1f °C", futureWeatherRequest.getList()[0].getMain().getTemp_min()) + " | " + String.format("%.1f °C", futureWeatherRequest.getList()[0].getMain().getTemp_max()));
-                                    dayNight.add(String.format("%.1f °C", futureWeatherRequest.getList()[1].getMain().getTemp_min()) + " | " + String.format("%.1f °C", futureWeatherRequest.getList()[1].getMain().getTemp_max()));
-                                    dayNight.add(String.format("%.1f °C", futureWeatherRequest.getList()[2].getMain().getTemp_min()) + " | " + String.format("%.1f °C", futureWeatherRequest.getList()[2].getMain().getTemp_max()));
-                                    dayNight.add(String.format("%.1f °C", futureWeatherRequest.getList()[3].getMain().getTemp_min()) + " | " + String.format("%.1f °C", futureWeatherRequest.getList()[3].getMain().getTemp_max()));
-                                    dayNight.add(String.format("%.1f °C", futureWeatherRequest.getList()[4].getMain().getTemp_min()) + " | " + String.format("%.1f °C", futureWeatherRequest.getList()[4].getMain().getTemp_max()));
-                                } else {
-                                    dayNight.add(String.format("%.1f °F", (futureWeatherRequest.getList()[0].getMain().getTemp_min())*32) + " | " + String.format("%.1f °F", (futureWeatherRequest.getList()[0].getMain().getTemp_max())*32));
-                                    dayNight.add(String.format("%.1f °F", (futureWeatherRequest.getList()[1].getMain().getTemp_min())*32) + " | " + String.format("%.1f °F", (futureWeatherRequest.getList()[1].getMain().getTemp_max())*32));
-                                    dayNight.add(String.format("%.1f °F", (futureWeatherRequest.getList()[2].getMain().getTemp_min())*32) + " | " + String.format("%.1f °F", (futureWeatherRequest.getList()[2].getMain().getTemp_max())*32));
-                                    dayNight.add(String.format("%.1f °F", (futureWeatherRequest.getList()[3].getMain().getTemp_min())*32) + " | " + String.format("%.1f °F", (futureWeatherRequest.getList()[3].getMain().getTemp_max())*32));
-                                    dayNight.add(String.format("%.1f °F", (futureWeatherRequest.getList()[4].getMain().getTemp_min())*32) + " | " + String.format("%.1f °F", (futureWeatherRequest.getList()[4].getMain().getTemp_max())*32));
-                                }
-                                weatherType.add(futureWeatherRequest.getList()[0].getWeather()[0].getMain());
-                                weatherType.add(futureWeatherRequest.getList()[1].getWeather()[0].getMain());
-                                weatherType.add(futureWeatherRequest.getList()[2].getWeather()[0].getMain());
-                                weatherType.add(futureWeatherRequest.getList()[3].getWeather()[0].getMain());
-                                weatherType.add(futureWeatherRequest.getList()[4].getWeather()[0].getMain());
-                            }
-                        });
-                    } catch (ProtocolException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }).start();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
     }
 }
