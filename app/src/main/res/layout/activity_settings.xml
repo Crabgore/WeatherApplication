@@ -1,52 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
         android:layout_marginStart="15dp"
         android:layout_marginEnd="15dp"
         android:layout_marginTop="15dp"
         android:text="@string/settings"
         android:textAlignment="center"
-        android:textSize="20sp"
-        android:textColor="@android:color/black"/>
+        android:textSize="20sp"/>
+
+<ScrollView
+    android:id="@+id/sc"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/cityChooser"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/title"
+        app:layout_constraintTop_toTopOf="parent"
         android:layout_marginStart="15dp"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="15dp"
         android:text="@string/choose_city"
-        android:textSize="15sp"
-        android:textColor="@android:color/black"
-        />
+        android:textSize="15sp" />
 
-    <Spinner
-        android:id="@+id/citySpinner"
+
+    <LinearLayout
+        android:id="@+id/spinnerItems"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/cityChooser"
+        android:orientation="horizontal"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="15dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="15dp"
-        android:entries="@array/cities"
-        >
-    </Spinner>
+        android:layout_marginEnd="10dp"
+        app:layout_constraintTop_toBottomOf="@id/cityChooser">
+
+        <Spinner
+            android:id="@+id/citySpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+        </Spinner>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="delCity"
+            android:text="@string/delete"
+            android:layout_weight="2"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/cityAdder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintTop_toBottomOf="@id/spinnerItems">
+
+        <EditText
+            android:id="@+id/addCity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/insertCity"
+            android:inputType="textCapWords"
+            android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            android:layout_weight="1" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="addCity"
+            android:text="@string/add"
+            android:layout_weight="2"/>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/loc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintTop_toBottomOf="@id/cityAdder"
+        android:text="@string/my_location"
+        android:onClick="MyLoc"/>
 
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/dark_theme_enabler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/citySpinner"
+        app:layout_constraintTop_toBottomOf="@id/loc"
         android:layout_marginTop="15dp"
         android:layout_marginStart="15dp"
         android:layout_marginEnd="15dp"
@@ -62,8 +122,7 @@
         android:layout_marginStart="15dp"
         android:layout_marginEnd="15dp"
         android:text="@string/temperature"
-        android:textSize="15sp"
-        android:textColor="@android:color/black"/>
+        android:textSize="15sp" />
 
 
     <RadioGroup
@@ -103,8 +162,7 @@
         android:layout_marginStart="15dp"
         android:layout_marginEnd="15dp"
         android:text="@string/wind_speed_count"
-        android:textSize="15sp"
-        android:textColor="@android:color/black"/>
+        android:textSize="15sp"/>
 
     <RadioGroup
         android:id="@+id/wind"
@@ -142,7 +200,7 @@
         android:layout_marginStart="15dp"
         android:layout_marginEnd="15dp"
         app:layout_constraintTop_toBottomOf="@id/wind"
-        android:text="@string/wind_speed"/>
+        android:text="@string/wind_speed" />
 
     <CheckBox
         android:id="@+id/showPressure"
@@ -154,14 +212,15 @@
         app:layout_constraintTop_toBottomOf="@id/showWindSpeed"
         android:text="@string/pressure"/>
 
-
-
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         android:text="@string/settings_accept"
-        android:onClick="settings_accept"/>
+        android:onClick="settingsAccept"
+        app:layout_constraintTop_toBottomOf="@id/showPressure"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
+
+</LinearLayout>

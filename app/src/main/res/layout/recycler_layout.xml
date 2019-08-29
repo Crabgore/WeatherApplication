@@ -3,7 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:baselineAligned="false">
 
     <LinearLayout
         android:orientation="vertical"
@@ -16,36 +17,34 @@
             android:id="@+id/day"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/tomorrow"
-            android:textColor="@android:color/white"
             android:textAlignment="center"
+            android:textColor="@android:color/white"
             android:shadowColor="@android:color/black"
-            android:shadowRadius="2"
-            android:shadowDx="2"
-            android:shadowDy="2"/>
+            android:shadowRadius="3"
+            android:shadowDx="3"
+            android:shadowDy="3"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/future_day_night"
-            android:textColor="@android:color/white"
             android:textAlignment="center"
+            android:textColor="@android:color/white"
             android:shadowColor="@android:color/black"
-            android:shadowRadius="2"
-            android:shadowDx="2"
-            android:shadowDy="2" />
+            android:shadowRadius="3"
+            android:shadowDx="3"
+            android:shadowDy="3"/>
 
         <TextView
             android:id="@+id/day_night"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/tomorrow_day_night"
-            android:textColor="@android:color/white"
             android:textAlignment="center"
+            android:textColor="@android:color/white"
             android:shadowColor="@android:color/black"
-            android:shadowRadius="2"
-            android:shadowDx="2"
-            android:shadowDy="2"/>
+            android:shadowRadius="3"
+            android:shadowDx="3"
+            android:shadowDy="3"/>
 
     </LinearLayout>
 
@@ -66,13 +65,11 @@
             android:id="@+id/text_weather_type"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/tomorrow_weath_type"
-            android:textColor="@android:color/white"
             android:textAlignment="center"
+            android:textColor="@android:color/white"
             android:shadowColor="@android:color/black"
-            android:shadowRadius="2"
-            android:shadowDx="2"
-            android:shadowDy="2"/>
-
+            android:shadowRadius="3"
+            android:shadowDx="3"
+            android:shadowDy="3"/>
     </LinearLayout>
 </LinearLayout>

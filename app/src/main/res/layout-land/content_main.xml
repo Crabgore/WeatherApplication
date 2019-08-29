@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/main"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".MainActivity"
-    tools:showIn="@layout/activity_main">
+    tools:showIn="@layout/app_bar_main">
 
-    <!-- это макет для альбомной ориентации -->
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <!-- Фрагмент с выбором городов -->
+        android:layout_height="match_parent"
+        android:baselineAligned="false">
         <fragment
             android:name="com.geekbrains.android_1.weatherapplication.Fragments.WeatherFragment"
             android:id="@+id/cities"
@@ -23,14 +22,11 @@
             android:layout_width="0px"
             android:layout_height="match_parent" />
 
-        <!-- Здесь будет герб выбранного города -->
         <FrameLayout
             android:id="@+id/weather"
             android:layout_width="0px"
             android:layout_height="match_parent"
             android:layout_weight="1">
         </FrameLayout>
-
     </LinearLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
