@@ -49,6 +49,8 @@
     <string name="add">Добавить</string>
     <string name="no_city">Введите и выберите город</string>
     <string name="no_such_city">Город не найден</string>
+    <string name="already_exists">Город уже есть в списке</string>
+    <string name="my_location">Моё местоположение</string>
 
     <string-array name="days">
         <item>Завтра</item>

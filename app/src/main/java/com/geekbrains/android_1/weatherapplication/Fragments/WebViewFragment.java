@@ -35,9 +35,11 @@ public class WebViewFragment extends Fragment implements OnBackPressedListener {
     }
 
     private void initUI(View layout) {
+        String dest = BaseActivity.mSettings.getString(BaseActivity.CHOSEN_CITY, "");
         webView = layout.findViewById(R.id.webView);
         webView.setWebViewClient(new MyWebViewClient());
-        webView.loadUrl("https://en.wikipedia.org/wiki/" + BaseActivity.mSettings.getString(BaseActivity.CHOSEN_CITY, ""));
+        if (dest.contains(",")) webView.loadUrl("https://en.wikipedia.org/wiki/" + dest.substring(0, dest.length() - 3));
+        else webView.loadUrl("https://en.wikipedia.org/wiki/" + dest);
     }
 
     @Override

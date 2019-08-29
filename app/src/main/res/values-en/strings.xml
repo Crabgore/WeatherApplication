@@ -50,6 +50,8 @@
     <string name="add">Add</string>
     <string name="no_city">Insert and choose city</string>
     <string name="no_such_city">City not found</string>
+    <string name="already_exists">City is already in list</string>
+    <string name="my_location">My location</string>
 
     <string-array name="days">
         <item>Tomorrow</item>

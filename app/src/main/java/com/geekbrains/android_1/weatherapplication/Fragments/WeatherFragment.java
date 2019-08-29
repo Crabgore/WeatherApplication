@@ -112,7 +112,7 @@ public class WeatherFragment extends Fragment {
     }
 
     private void setWeather (String cityName) {
-        OpenWeatherRepo.getSingleton().getCAPI().loadWeather(cityName + ",ru", BuildConfig.WEATHER_API_KEY)
+        OpenWeatherRepo.getSingleton().getCAPI().loadWeather(cityName, BuildConfig.WEATHER_API_KEY)
                 .enqueue(new Callback<WeatherRequestRestModel>() {
                     @Override
                     public void onResponse(@NonNull Call<WeatherRequestRestModel> call,

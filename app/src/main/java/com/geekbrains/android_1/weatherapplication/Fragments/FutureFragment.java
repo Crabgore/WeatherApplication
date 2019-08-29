@@ -71,7 +71,7 @@ public class FutureFragment extends Fragment {
     }
 
     private void setWeather(String cityName){
-        OpenWeatherRepo.getSingleton().getFAPI().loadWeather(cityName + ",ru",
+        OpenWeatherRepo.getSingleton().getFAPI().loadWeather(cityName,
                 BuildConfig.WEATHER_API_KEY)
                 .enqueue(new Callback<WeatherForecastRequestRestModel>() {
                     @Override
