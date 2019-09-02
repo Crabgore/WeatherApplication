@@ -139,7 +139,14 @@ public class SettingsActivity extends BaseActivity {
 
     public void MyLoc(View view) {
         if (MainActivity.location != null) {
-            addCity.setText(getAddressByLoc(MainActivity.location));
+            String currentLocation = getAddressByLoc(MainActivity.location);
+            if (cities.isEmpty() || !cities.contains(currentLocation)) {
+                CitiesTable.addNewCityWeather(currentLocation, MainActivity.database);
+                initSpinner();
+                spinner.setSelection(cities.indexOf(currentLocation));
+            } else if (cities.contains(currentLocation)) {
+                spinner.setSelection(cities.indexOf(currentLocation));
+            }
         }
     }
 
