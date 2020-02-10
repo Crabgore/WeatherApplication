@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Weather Application</string>
+    <string name="app_name">Weathery R</string>
     <string name="future_day_night">День | Ночь</string>
     <string name="choose_city">Выберите город:</string>
     <string name="wind_speed">Показывать скорость ветра</string>
@@ -23,6 +23,8 @@
     <string name="clear">Ясно</string>
     <string name="rain">Осадки</string>
     <string name="mist">Туман</string>
+    <string name="drizzle">Изморось</string>
+    <string name="snow">Снег</string>
     <string name="day">Днём</string>
     <string name="night">Ночью</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -33,31 +35,38 @@
     <string name="feedback">Форма обратной связи</string>
     <string name="msg">Введите ваше сообщение</string>
     <string name="send">Отправить</string>
-    <string name="developer_information">Здесь, судя по всему должна быть информация обо мне, как о разработчике данного приложения. Но пока здесь ничего нет, так как я только в начале своего профессионального пути :)</string>
     <string name="weather_visual">визуальное отображение погоды</string>
     <string name="about">О разработчике</string>
-    <string name="communicate">Связь с разработчиком</string>
+    <string name="communicate">Инструменты</string>
     <string name="forecast">Прогноз</string>
     <string name="settings">Настройки</string>
     <string name="info">О городе</string>
-    <string name="user_s_avatar">User\'s avatar</string>
-    <string name="network_error">Ошибка</string>
+    <string name="network_error">Ошибка. Возможны проблемы с соединением</string>
     <string name="insert_message">Введите сообщение</string>
     <string name="sent">Отправлено</string>
     <string name="delete">Удалить</string>
-    <string name="insertCity">Введите город</string>
+    <string name="insertCity">Введите город (на Английском)</string>
     <string name="add">Добавить</string>
     <string name="no_city">Введите и выберите город</string>
     <string name="no_such_city">Город не найден</string>
     <string name="already_exists">Город уже есть в списке</string>
     <string name="my_location">Моё местоположение</string>
-
-    <string-array name="days">
-        <item>Завтра</item>
-        <item>через день</item>
-        <item>через два дня</item>
-        <item>через три дня</item>
-        <item>через четыре дня</item>
-    </string-array>
+    <string name="automaticly">Автоматически на основе города</string>
+    <string name="please_choose_city">Сначала выберите город</string>
+    <string name="about_city">О городе</string>
+    <string name="no_location">Не удалось определить местоположение</string>
+    <string name="today">Сегодня</string>
+    <string name="dark">Тёмная</string>
+    <string name="light">Светлая</string>
+    <string name="auto">Автоматическая</string>
+    <string name="city_title">Город</string>
+    <string name="showing">Отображение</string>
+    <string name="theme">Тема</string>
+    <string name="like">Оценить приложение</string>
+    <string name="denied">Разрешение не предоставлено</string>
+    <string name="denied_message">Без предоставления этого разрешения, приложение может работать некорректно. Вы уверены, что не хотите его предоставить?</string>
+    <string name="sure">Уверен</string>
+    <string name="retry">Предоставить</string>
+    <string name="show_humidity">Показывать влажность</string>
 
 </resources>
