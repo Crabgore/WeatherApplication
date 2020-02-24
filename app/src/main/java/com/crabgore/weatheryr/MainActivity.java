@@ -338,6 +338,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         editor.apply();
 
+        SettingsActivity.saveCityInFile(this, currentLocation);
+
         checkOrientation();
     }
 

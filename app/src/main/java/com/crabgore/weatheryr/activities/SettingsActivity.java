@@ -1,5 +1,6 @@
 package com.crabgore.weatheryr.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Address;
@@ -23,6 +24,11 @@ import com.crabgore.weatheryr.database.CitiesTable;
 import com.crabgore.weatheryr.rest.OpenWeatherRepo;
 import com.crabgore.weatheryr.rest.currentRest.entities.WeatherRequestRestModel;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -136,10 +142,32 @@ public class SettingsActivity extends BaseActivity {
             editor.putString(CHOSEN_CITY, spinner.getSelectedItem().toString());
             editor.putInt(CHOSEN_CITY_ID, spinner.getSelectedItemPosition());
             editor.apply();
+
+            saveCityInFile(this, spinner.getSelectedItem().toString());
+
             setResult(RESULT_OK, resultIntent);
             finish();
         } else
             Toast.makeText(getApplicationContext(), getResources().getString(R.string.no_city), Toast.LENGTH_SHORT).show();
+    }
+
+    public static void saveCityInFile(Context context, String cityName) {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("CityName", cityName);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        File file = new File(context.getFilesDir() + File.separator + "cityname.json");
+        try {
+            FileWriter fileWriter = new FileWriter(file, false);
+            fileWriter.write(jsonObject.toString());
+            fileWriter.flush();
+            fileWriter.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void addCity(View view) {
