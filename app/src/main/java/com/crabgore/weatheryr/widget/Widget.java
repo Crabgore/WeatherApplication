@@ -7,6 +7,7 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
@@ -27,6 +28,7 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
@@ -98,16 +100,31 @@ public class Widget extends AppWidgetProvider {
 
     @SuppressLint("DefaultLocale")
     private void setWeather(WeatherRequestRestModel body, RemoteViews refresh, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+        int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+
         refresh.setTextViewText(R.id.day, checkDate());
         refresh.setTextViewText(R.id.curTemp, String.format("%.0f °C", body.main.temp - 273));
         switch (body.weather[0].main) {
             case "Clouds":
-                refresh.setImageViewResource(R.id.image_weather_type, R.drawable.cloud);
+                if (body.weather[0].description.equals("overcast clouds")) {
+                    refresh.setImageViewResource(R.id.image_weather_type, R.drawable.cloud);
+                } else {
+                    refresh.setImageViewResource(R.id.image_weather_type, R.drawable.sunnycloud);
+                }
                 break;
             case "Clear":
-                refresh.setImageViewResource(R.id.image_weather_type, R.drawable.sun);
+                if (hour > 12) {
+                    refresh.setImageViewResource(R.id.image_weather_type, R.drawable.sun);
+                } else {
+                    refresh.setImageViewResource(R.id.image_weather_type, R.drawable.moon);
+                }
                 break;
             case "Rain":
+                if (body.weather[0].description.equals("heavy rain")) {
+                    refresh.setImageViewResource(R.id.image_weather_type, R.drawable.storm);
+                } else {
+                    refresh.setImageViewResource(R.id.image_weather_type, R.drawable.rain);
+                }
             case "Drizzle":
                 refresh.setImageViewResource(R.id.image_weather_type, R.drawable.rain);
                 break;

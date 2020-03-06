@@ -30,7 +30,7 @@
 
         <receiver
             android:name=".widget.Widget"
-            android:icon="@android:drawable/star_big_on"
+            android:icon="@mipmap/launcher"
             android:label="MyWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
