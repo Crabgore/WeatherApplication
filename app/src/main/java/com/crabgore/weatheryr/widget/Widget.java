@@ -7,9 +7,7 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.widget.RemoteViews;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -100,7 +98,7 @@ public class Widget extends AppWidgetProvider {
 
     @SuppressLint("DefaultLocale")
     private void setWeather(WeatherRequestRestModel body, RemoteViews refresh, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+        long curTime = System.currentTimeMillis() / 1000;
 
         refresh.setTextViewText(R.id.day, checkDate());
         refresh.setTextViewText(R.id.curTemp, String.format("%.0f °C", body.main.temp - 273));
@@ -113,7 +111,7 @@ public class Widget extends AppWidgetProvider {
                 }
                 break;
             case "Clear":
-                if (hour > 12) {
+                if (curTime > body.sys.sunrise && curTime < body.sys.sunset) {
                     refresh.setImageViewResource(R.id.image_weather_type, R.drawable.sun);
                 } else {
                     refresh.setImageViewResource(R.id.image_weather_type, R.drawable.moon);

@@ -143,31 +143,12 @@ public class SettingsActivity extends BaseActivity {
             editor.putInt(CHOSEN_CITY_ID, spinner.getSelectedItemPosition());
             editor.apply();
 
-            saveCityInFile(this, spinner.getSelectedItem().toString());
+            saveInFile(this, spinner.getSelectedItem().toString());
 
             setResult(RESULT_OK, resultIntent);
             finish();
         } else
             Toast.makeText(getApplicationContext(), getResources().getString(R.string.no_city), Toast.LENGTH_SHORT).show();
-    }
-
-    public static void saveCityInFile(Context context, String cityName) {
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put("CityName", cityName);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        File file = new File(context.getFilesDir() + File.separator + "cityname.json");
-        try {
-            FileWriter fileWriter = new FileWriter(file, false);
-            fileWriter.write(jsonObject.toString());
-            fileWriter.flush();
-            fileWriter.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public void addCity(View view) {

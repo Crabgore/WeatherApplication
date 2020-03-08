@@ -1,5 +1,6 @@
 package com.crabgore.weatheryr.activities;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -10,6 +11,13 @@ import androidx.appcompat.app.AppCompatDelegate;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
@@ -47,6 +55,25 @@ public abstract class BaseActivity extends AppCompatActivity {
         } else if (mSettings.getString(DAY_NIGHT, "no").equals("yes")) {
             AppCompatDelegate.setDefaultNightMode(
                     AppCompatDelegate.MODE_NIGHT_YES);
+        }
+    }
+
+    public static void saveInFile(Context context, String cityName) {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("CityName", cityName);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        File file = new File(context.getFilesDir() + File.separator + "cityname.json");
+        try {
+            FileWriter fileWriter = new FileWriter(file, false);
+            fileWriter.write(jsonObject.toString());
+            fileWriter.flush();
+            fileWriter.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
